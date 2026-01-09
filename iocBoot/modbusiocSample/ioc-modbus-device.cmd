@@ -8,19 +8,12 @@
 dbLoadDatabase "../../dbd/maccaferriPS.dbd"
 maccaferriPS_registerRecordDeviceDriver(pdbbase)
 
-# -------- Modbus RTU (Serial) Configuration --------
-# Configure an Asyn serial port for the Modbus RTU controller
-# Adjust the device path and serial options as needed for your setup
-drvAsynSerialPortConfigure("MACCF_ASYN", "/dev/ttyUSB0", 0, 0, 0)
-# Serial options (typical): 19200, 8N1, no flow control
-asynSetOption("MACCF_ASYN", -1, "baud", "19200")
-asynSetOption("MACCF_ASYN", -1, "bits", "8")
-asynSetOption("MACCF_ASYN", -1, "parity", "none")
-asynSetOption("MACCF_ASYN", -1, "stop", "1")
-asynSetOption("MACCF_ASYN", -1, "clocal", "Y")
-asynSetOption("MACCF_ASYN", -1, "crtscts", "N")
+# -------- Modbus TCP Configuration --------
+# Configure an Asyn IP port for the Modbus TCP gateway
+# Adjust the IP address and port as needed for your Modbus TCP gateway
+drvAsynIPPortConfigure("MACCF_ASYN", "127.0.0.1:502", 0, 0, 1)
 
-# Configure Modbus interposer for RTU (linkType = 1)
+# Configure Modbus interposer for RTU over TCP (linkType = 1)
 # modbusInterposeConfig(portName, linkType, timeoutMsec, writeDelayMsec)
 modbusInterposeConfig("MACCF_ASYN", 1, 2000, 10)
 

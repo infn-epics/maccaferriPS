@@ -28,6 +28,8 @@ PROD_IOC = maccaferriPS
 
 # maccaferriPS.dbd will be created and installed
 DBD += maccaferriPS.dbd
+DBD += maccaferriPSSupport.dbd
+
 
 # Ensure support dbd is built before main dbd
 $(COMMON_DIR)/maccaferriPS.dbd: $(COMMON_DIR)/maccaferriPSSupport.dbd
