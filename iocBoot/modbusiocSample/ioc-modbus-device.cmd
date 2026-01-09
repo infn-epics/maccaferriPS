@@ -1,35 +1,54 @@
-#!../../bin/linux-x86_64/templatedmodbus
+#!../../bin/linux-x86_64/maccaferriPS
 # https://epics-modbus.readthedocs.io/en/latest/overview.htm
 
 < envPaths
 
 ## Register all support components
-dbLoadDatabase "../../dbd/templatedmodbus.dbd"
-templatedmodbus_registerRecordDeviceDriver(pdbbase)
+# Use the maccaferriPS DBD and register the driver
+dbLoadDatabase "../../dbd/maccaferriPS.dbd"
+maccaferriPS_registerRecordDeviceDriver(pdbbase)
 
-# Configure Modbus TCP communication
-# replace with the actual IP address and port of your Modbus device
-drvAsynIPPortConfigure("MODBUS_IP", "192.168.1.100:502", 0, 0, 0)
-modbusInterposeConfig("MODBUS_IP", 0, 0, 0)
+# -------- Modbus RTU (Serial) Configuration --------
+# Configure an Asyn serial port for the Modbus RTU controller
+# Adjust the device path and serial options as needed for your setup
+drvAsynSerialPortConfigure("MACCF_ASYN", "/dev/ttyUSB0", 0, 0, 0)
+# Serial options (typical): 19200, 8N1, no flow control
+asynSetOption("MACCF_ASYN", -1, "baud", "19200")
+asynSetOption("MACCF_ASYN", -1, "bits", "8")
+asynSetOption("MACCF_ASYN", -1, "parity", "none")
+asynSetOption("MACCF_ASYN", -1, "stop", "1")
+asynSetOption("MACCF_ASYN", -1, "clocal", "Y")
+asynSetOption("MACCF_ASYN", -1, "crtscts", "N")
 
-# Define Modbus ports ASYN ports
+# Configure Modbus interposer for RTU (linkType = 1)
+# modbusInterposeConfig(portName, linkType, timeoutMsec, writeDelayMsec)
+modbusInterposeConfig("MACCF_ASYN", 1, 2000, 10)
 
-## define ASYN MODBUS_AI port to access 10 Read Input Registers (0-9) 
-drvModbusAsynConfigure("MODBUS_AI", "MODBUS_IP", 1, 4, 0, 10, 0, 1000, "GenericDevice")
+# -------- Define Modbus ports (slave id = 1 by default) --------
+# Read Holding Registers for COMMAND AREA (0x0000..0x0001)
+drvModbusAsynConfigure("MACCF_CMD_RO", "MACCF_ASYN", 1, 3, 0, 2, 0, 1000, "MACCAFERRIPS")
+# Write Holding Registers for COMMAND AREA (on demand writes)
+drvModbusAsynConfigure("MACCF_CMD_WO", "MACCF_ASYN", 1, 16, 0, 2, 0, 0, "MACCAFERRIPS")
+# Write Coils for commands (single-coil writes)
+drvModbusAsynConfigure("MACCF_COIL_W", "MACCF_ASYN", 1, 5, 0, 9, 0, 0, "MACCAFERRIPS")
 
-## define ASYN MODBUS_AI2 port to access to read 3 Read Input Registers (0-2) from 350 to 352 
-drvModbusAsynConfigure("MODBUS_AI2", "MODBUS_IP", 1, 4, 350, 3, 0, 10000, "ICPDAS7226")
-# define ASYN MODBUS_AO to access 2  Single Register (0-1) from 0 to 2
-drvModbusAsynConfigure("MODBUS_AO", "MODBUS_IP", 1, 6, 0, 2, 0, 1000, "GenericDevice")
+# FAST readback for Current/Voltage/Reference (registers 0x0023..0x0026)
+# start address 35 (0x0023), count 4, poll every 40 ms to meet >=20 Hz requirement
+drvModbusAsynConfigure("MACCF_FAST_AI", "MACCF_ASYN", 1, 4, 35, 4, 0, 40, "MACCAFERRIPS")
 
-## define ASYN MODBUS_DI read 8 to access  Discrete Inputs from 0 to 7
-drvModbusAsynConfigure("MODBUS_DI", "MODBUS_IP", 1, 2, 0, 8, 0, 1000, "GenericDevice")
+# SLOW readback for Faults/States (registers 0x0020..0x0022)
+# start address 32 (0x0020), count 3, poll at 1000 ms
+drvModbusAsynConfigure("MACCF_SLOW_AI", "MACCF_ASYN", 1, 4, 32, 3, 0, 1000, "MACCAFERRIPS")
 
-## define ASYN MODBUS_DO port to access 8 Single Coil              5
-drvModbusAsynConfigure("MODBUS_DO", "MODBUS_IP", 1, 5, 0, 8, 0, 1000, "GenericDevice")
+# Load DB records: pass port substitution names and common parameters
+# Usage: P=prefix, R=DeviceName, PORTFAST, PORTSLOW, PORTCMD, WPORT, COIL_W, SLAVE
+# Example substitution values are shown below; adjust as required when loading
 
-# Load database records ## ports name are already define in db
-dbLoadRecords("$(TOP)/db/modbusDevice.db", "P=MODBUS,R=Device")
+# Load database records with substitution parameters (example values)
+dbLoadRecords("$(TOP)/db/maccaferriPS.db", "P=MACCF,R=PS01,PORTFAST=MACCF_FAST_AI,PORTSLOW=MACCF_SLOW_AI,PORTCMD=MACCF_CMD_RO,WPORT=MACCF_CMD_WO,COIL_W=MACCF_COIL_W,SLAVE=1,TIMEOUT=2000,WPOLL=0,RPOLL=40")
+
+# Initialize IOC
+iocInit()
 
 ## Modbus Function Codes Documentation
 # Access         Function Description           Function Code

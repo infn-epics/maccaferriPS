@@ -22,47 +22,48 @@ templatedmodbusSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 # Auto-generate a header file containing a version string.
 # Version comes from the VCS if available, else date+time.
-GENVERSION = templatedmodbusVersion.h
+GENVERSION = maccaferriPSVersion.h
 # Macro name
-GENVERSIONMACRO = templatedmodbusVERSION
+GENVERSIONMACRO = maccaferriPSVERSION
 
 # Build the IOC application
-PROD_IOC = templatedmodbus
+PROD_IOC = maccaferriPS
 
-# templatedmodbus.dbd will be created and installed
-DBD += templatedmodbus.dbd
+# maccaferriPS.dbd will be created and installed
+DBD += maccaferriPS.dbd
 
-# templatedmodbus.dbd will include these files:
-templatedmodbus_DBD += base.dbd
-templatedmodbus_DBD += modbusSupport.dbd
-templatedmodbus_DBD += asyn.dbd
-templatedmodbus_DBD += drvAsynIPPort.dbd
-templatedmodbus_SRCS += templatedmodbus_registerRecordDeviceDriver.cpp
+# maccaferriPS.dbd will include these files:
+maccaferriPS_DBD += base.dbd
+maccaferriPS_DBD += modbusSupport.dbd
+maccaferriPS_DBD += asyn.dbd
+maccaferriPS_DBD += drvAsynIPPort.dbd
+maccaferriPS_DBD += drvAsynSerialPort.dbd
+maccaferriPS_SRCS += maccaferriPS_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point where needed
-templatedmodbus_SRCS_DEFAULT += templatedmodbusMain.cpp
-templatedmodbus_SRCS_vxWorks += -nil-
+maccaferriPS_SRCS_DEFAULT += maccaferriPSMain.cpp
+maccaferriPS_SRCS_vxWorks += -nil-
 
 # Link in the code from our support library
-templatedmodbus_LIBS += asyn
-templatedmodbus_LIBS += modbus
+maccaferriPS_LIBS += asyn
+maccaferriPS_LIBS += modbus
 # To build SNL programs, SNCSEQ must be defined
 # in the <top>/configure/RELEASE file
 
 # Link QSRV (pvAccess Server) if available
 ifdef EPICS_QSRV_MAJOR_VERSION
-    templatedmodbus_LIBS += qsrv
-    templatedmodbus_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
-    templatedmodbus_DBD += PVAServerRegister.dbd
-    templatedmodbus_DBD += qsrv.dbd
+    maccaferriPS_LIBS += qsrv
+    maccaferriPS_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+    maccaferriPS_DBD += PVAServerRegister.dbd
+    maccaferriPS_DBD += qsrv.dbd
 endif
 
 # Finally link IOC to the EPICS Base libraries
-templatedmodbus_LIBS += $(EPICS_BASE_IOC_LIBS)
+maccaferriPS_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD EXTRA GNUMAKE RULES BELOW HERE
 
 # Explicit dependency needed for generated header file
-devtemplatedmodbusVersion$(DEP): $(COMMON_DIR)/$(GENVERSION)
+devmaccaferriPSVersion$(DEP): $(COMMON_DIR)/$(GENVERSION)

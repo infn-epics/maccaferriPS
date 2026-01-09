@@ -21,34 +21,15 @@ For detailed Modbus documentation, refer to the [EPICS Modbus Documentation](htt
 
 ## Database Files
 
-### Templates
-- **`FwdRevPulse.template`**: Defines forward and reverse pulse logic.
-- **`icpai.template`**: Analog input template for ICPDAS devices.
-- **`icpao.template`**: Analog output template for ICPDAS devices.
-- **`ICPDASAIO.template`**: Combined analog input/output template.
-- **`ICPDASGV.template`**: General-purpose variables for ICPDAS devices.
-- **`ICPDASRly.template`**: Relay control template.
-- **`ICPDASRlyPulse.template`**: Relay pulse control template.
-- **`icpdasVersion.template`**: Template for device version information.
-- **`icpdi.template`**: Digital input template.
-- **`icpdo.template`**: Digital output template.
-- **`icprtd.template`**: RTD (Resistance Temperature Detector) template.
-- **`icprtdsensor.template`**: RTD sensor template.
+This repository now focuses on the `maccaferriPS` IOC implementation.
 
-### Substitution Files
-- **`icp7026.substitutions`**: Configuration for the ICPDAS 7026 module.
-- **`icp7060.substitutions`**: Configuration for the ICPDAS 7060 module.
-- **`icp7215.substitutions`**: Configuration for the ICPDAS 7215 module.
-- **`icp7226.substitutions`**: Configuration for the ICPDAS 7226 module.
-- **`icp7250.substitutions`**: Configuration for the ICPDAS 7250 module.
-- **`icp7267.substitutions`**: Configuration for the ICPDAS 7267 module.
+- **`maccaferriPS.db`**: Database implementing the Modbus register mapping and EPICS PVs for the maccaferriPS power supply (commands, current setpoint, fast readbacks, faults and states).
+
+For configuration details, example startup scripts and a small simulator for testing, see `templatedmodbusApp/README.maccaferriPS.md` and `tools/sim_maccaferri_rtu.py`.
 
 ---
 
 ## Source Code
-
-### `icpdasMain.cpp`
-The main entry point for the IOC. It initializes the EPICS environment and registers the necessary components.
 
 ### `initTrace.c`
 Implements tracing and debugging utilities for the IOC.
@@ -57,24 +38,7 @@ Implements tracing and debugging utilities for the IOC.
 
 ## Startup Script
 
-### `ioc-icpdas7060.cmd`
-This script configures and starts the IOC for the ICPDAS 7060 module. Key steps include:
-1. Loading the environment variables from `envPaths`.
-2. Registering the EPICS database and device drivers.
-3. Configuring the Asyn IP port for Modbus communication.
-4. Defining Modbus ports for reading and writing data.
-5. Loading the EPICS records database (`icp7060.db`) with appropriate parameters.
-6. Initializing the IOC.
-
-#### Example Configuration:
-- **IP Address:** `10.16.4.33`
-- **Port:** `502` (Modbus default port)
-- **Modbus Ports:**
-  - `ICP_get_port`: Reads holding registers.
-  - `ICP_set_port`: Writes to coils.
-  - `ICP_DI`: Reads digital inputs.
-  - `ICP_DICNT`: Reads digital input counters.
-  - `ICP_info_port`: Reads device information.
+See `iocBoot/modbusiocSample/ioc-modbus-device.cmd` for an example configuration that sets up a serial Modbus RTU connection and the required ports for the `maccaferriPS` database.
 
 ---
 

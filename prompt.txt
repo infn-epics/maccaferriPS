@@ -1,0 +1,124 @@
+I would like you to adapt this template modbus epics ioc to operate with in serial RTU mode. 
+Rename the template as maccaferriPS, implement the following commands:
+It follows a detailed description for each command.
+3.1 Off
+The Off command will shut down the PS. This command is not intended for emergency
+so that a proper sequence can be accomplished before the actual power off.
+3.2 Standby
+In the ON state, if the output current is at the reference value or a ramp is in progress,
+the command Standby must produce a ramp to 0 A. When the output is at 0 A the PS
+will execute a transition ON -> STANDBY. After this sequence, the Current Reference
+Register stays set to 0.
+3.3 Reset
+In the FAULTY state the command Reset clears all the alarms for which the fault
+condition does not longer persist and then executes the transition to the STANDBY
+state (if no faults are still present).
+3.4 On
+In the STANDBY state the On command executes the transition STANDBY -> ON.
+The Current Reference Register must be reset to 0.
+In the FAULTY state the On command is ignored.
+3.5 ModeDC - ModePulsed
+In the STANDBY state the ModeDC / ModePulsed commands selects the DC or Pulsed
+modes. The state is not affected by these commands.
+In any other states the commands are ignored.
+3.6 PolaPositive - PolaNegative
+In the STANDBY state the PolaPositive - PolaNegative commands select the PS
+polarity. The state is not affected by these commands.
+In any other states the commands are ignored.
+3.7 SetCurrent
+Whatever is the state the current reference value issued with SetCurrent must be
+latched. The state is not affected by this command.
+3.8 StartRamp
+When in the ON status and in the PULSED mode, the command StartRamp will charge
+the booster capacitor until the suitable level related to the current set. After this the
+actual current delivery will follows the start and stop triggers. For further details on the
+pulsed mode, see specs SR 20050419.
+When in the ON status and in the DC mode, the command StartRamp will start the
+output current ramp toward the reference value. This command is equivalent to a trigger
+pulse. The Time delay from the reception of a software StartRamp command and the
+actual beginning of current variation must be ≤ 20 [ms] (the time delay is calculated
+from the last stop bit of the command).
+All the readbacks must be available during a ramp. This means that it must be possible
+to check continuously the PS state and to track the analog values in real-time.
+
+
+Modbus Registers:
+The Current and Voltage values (that is the rate at which the interface updates the
+holding registers readable through serial link) must be ≥ 20 Hz.
+5.3 Database structure
+It is reported the slave internal database structure. In order to ensure the compatibility
+with other already implemented MODBUS slaves, the command and readback
+addresses as well as the bit positions for each register are mandatory. The last valid
+address is 0x003F. The address indicates the word number (i.e. address 0x0000 locates
+the first 16-bit word, address 0x0001 the second 16-bit word and so on).
+COMMAND AREA (Read/Write)
+LOCAL
+ADDRESS
+BIT DESCRIPTION
+Commands
+0x0000 0 Standby
+1 On
+2 Off
+3 Reset
+4 StartRamp
+5 ModeDC
+6 ModePulsed
+7 PolaPositive
+8 PolaNegative
+9-15 Not Used
+Write Registers
+0x0001 0-15 Current Reference Register
+Padding Area
+0x0002-0x001F For spare commands... (all words must be set to zero)
+Tab. 2 - All the write registers in the COMMAND AREA must be also readable through the Modbus
+Read function.
+SPECIFICATIONS CS-20051109.1 Pag. 8/8
+v 1.2
+READBACK AREA (Read only)
+LOCAL
+ADDRESS
+BIT DESCRIPTION
+Faults
+0x0020 0 Input AC line fuse failure (if used)
+1 Phase unbalance / loss / reversal
+2 AC over current
+3 DC over current
+4 Cooling system failure
+5 Rectifier transformer over temperature
+6 Rectifier over temperature
+7 Filter choke over temperature
+8 Filter capacitor fuse failure
+9 Resonant Capacitor failure
+10 Rectifier failure
+11 Booster switches failure
+12 Booster switches over temperature
+13 Chopper switches failure
+14 Chopper switches over temperature
+15 DCCT failure
+0x0021 0 Excessive current ripple alarm (*)
+1 Maximum DC ground current
+2 Cabinet over temperature
+3 Cabinet door open
+4 External interlock 1
+5 External interlock 2
+6-15 Not used
+States & Modes
+0x0022 0 0 = Remote, 1 = Local
+1 Standby
+2 On
+3 Fault Sum (logical OR of all faults)
+4 0 = DC, 1 = Pulsed
+5 0 = Pol. Positive, 1 = Pol. Negative
+6 - 15 Not Used
+Readout Registers
+0x0023 0 - 15 Current Reference readback
+0x0024 0 - 15 Output current readback
+0x0025 0 - 15 Output voltage readback
+0x0026 0 - 15 Ground current readback
+Padding Area
+0x0027-0x003F For spare readouts...
+Tab. 4 - The "Current Reference readback" must contain the last value written into the "Current Reference
+Register" of the COMMAND AREA.
+Items marked with a "*" are warnings and do not cause a transition to the FAULTY status
+
+

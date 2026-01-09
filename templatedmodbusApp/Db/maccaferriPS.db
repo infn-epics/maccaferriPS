@@ -1,0 +1,285 @@
+# maccaferriPS.db
+# Substitutions expected when loading:
+# P - PV prefix
+# R - Device name
+# PORTFAST - fast input register port (reads 0x0023..0x0026)
+# PORTSLOW - slow input register port (reads 0x0020..0x0022)
+# PORTCMD - read holding registers port (reads 0x0000..0x001F)
+# WPORT - write holding registers port (write 0x0000..0x001F)
+# COIL_W - coil write port (write single coils)
+# SLAVE, TIMEOUT, RPOLL, WPOLL - optional parameters
+
+## ----- COMMANDS (as coils) -----
+record(bo, "$(P):$(R):CMD_STANDBY") {
+    field(DESC, "Standby command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 0 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_ON") {
+    field(DESC, "On command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 1 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_OFF") {
+    field(DESC, "Off command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 2 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_RESET") {
+    field(DESC, "Reset command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 3 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_STARTRAMP") {
+    field(DESC, "StartRamp command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 4 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_MODE_DC") {
+    field(DESC, "Mode DC command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 5 1)")
+    field(ONAM, "DC")
+    field(ZNAM, "PULSED")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_MODE_PULSED") {
+    field(DESC, "Mode Pulsed command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 6 1)")
+    field(ONAM, "PULSED")
+    field(ZNAM, "DC")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_POLA_POSITIVE") {
+    field(DESC, "Polarity Positive command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 7 1)")
+    field(ONAM, "POS")
+    field(ZNAM, "NEG")
+    field(SCAN, "Passive")
+}
+
+record(bo, "$(P):$(R):CMD_POLA_NEGATIVE") {
+    field(DESC, "Polarity Negative command")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT, "@asynMask($(COIL_W) 8 1)")
+    field(ONAM, "NEG")
+    field(ZNAM, "POS")
+    field(SCAN, "Passive")
+}
+
+## ----- Command register readback (holding reg 0x0000) -----
+record(ai, "$(P):$(R):CMD_REG_RB") {
+    field(DESC, "Command Register readback (raw word)")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORTCMD) 0 $(TIMEOUT=2000))INT16")
+    field(SCAN, "I/O Intr")
+}
+
+## ----- Current setpoint (holding reg 0x0001) -----
+record(ao, "$(P):$(R):CURR_SET") {
+    field(DESC, "Current Reference Set")
+    field(DTYP, "asynFloat64")
+    field(OUT, "@asyn($(WPORT) 1 $(TIMEOUT=2000))INT16")
+    field(SCAN, "Passive")
+}
+
+## ----- Fast readbacks (registers 0x0023..0x0026) - PORTFAST start at 0x0023 -----
+record(ai, "$(P):$(R):CURR_RB") {
+    field(DESC, "Current Reference readback")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORTFAST) 0 $(TIMEOUT=2000))INT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):OUTPUT_CURRENT_RB") {
+    field(DESC, "Output current readback")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORTFAST) 1 $(TIMEOUT=2000))INT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):OUTPUT_VOLTAGE_RB") {
+    field(DESC, "Output voltage readback")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORTFAST) 2 $(TIMEOUT=2000))INT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):GROUND_CURRENT_RB") {
+    field(DESC, "Ground current readback")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORTFAST) 3 $(TIMEOUT=2000))INT16")
+    field(SCAN, "I/O Intr")
+}
+
+## ----- Faults (register 0x0020, PORTSLOW REGOFFSET 0) -----
+record(bi, "$(P):$(R):FAULT:AC_LINE_FUSE") {
+    field(DESC, "Input AC line fuse failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 1)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:PHASE_UNBALANCE") {
+    field(DESC, "Phase unbalance / loss / reversal")
+    field(INP, "@asynMask($(PORTSLOW) 0 2)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:AC_OVER_CURRENT") {
+    field(DESC, "AC over current")
+    field(INP, "@asynMask($(PORTSLOW) 0 4)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:DC_OVER_CURRENT") {
+    field(DESC, "DC over current")
+    field(INP, "@asynMask($(PORTSLOW) 0 8)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:COOLING_FAILURE") {
+    field(DESC, "Cooling system failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 16)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:RECT_TRANSF_OVER_TEMP") {
+    field(DESC, "Rectifier transformer over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 0 32)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:RECT_OVER_TEMP") {
+    field(DESC, "Rectifier over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 0 64)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:FILTER_CHOKE_OVER_TEMP") {
+    field(DESC, "Filter choke over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 0 128)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:FILTER_CAP_FUSE_FAILURE") {
+    field(DESC, "Filter capacitor fuse failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 256)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:RESONANT_CAP_FAIL") {
+    field(DESC, "Resonant Capacitor failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 512)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:RECTIFIER_FAILURE") {
+    field(DESC, "Rectifier failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 1024)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:BOOSTER_SWITCHES_FAILURE") {
+    field(DESC, "Booster switches failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 2048)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:BOOSTER_SWITCHES_OVER_TEMP") {
+    field(DESC, "Booster switches over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 0 4096)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:CHOPPER_SWITCHES_FAILURE") {
+    field(DESC, "Chopper switches failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 8192)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:CHOPPER_SWITCHES_OVER_TEMP") {
+    field(DESC, "Chopper switches over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 0 16384)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:DCCT_FAILURE") {
+    field(DESC, "DCCT failure")
+    field(INP, "@asynMask($(PORTSLOW) 0 32768)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+
+## ----- Additional fault bits (register 0x0021, PORTSLOW REGOFFSET 1) -----
+record(bi, "$(P):$(R):WARN:EXCESSIVE_CURRENT_RIPPLE") {
+    field(DESC, "Excessive current ripple alarm (warning)")
+    field(INP, "@asynMask($(PORTSLOW) 1 1)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:MAX_DC_GROUND_CURRENT") {
+    field(DESC, "Maximum DC ground current")
+    field(INP, "@asynMask($(PORTSLOW) 1 2)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:CABINET_OVER_TEMP") {
+    field(DESC, "Cabinet over temperature")
+    field(INP, "@asynMask($(PORTSLOW) 1 4)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:CABINET_DOOR_OPEN") {
+    field(DESC, "Cabinet door open")
+    field(INP, "@asynMask($(PORTSLOW) 1 8)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:EXTERNAL_INTERLOCK_1") {
+    field(DESC, "External interlock 1")
+    field(INP, "@asynMask($(PORTSLOW) 1 16)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):FAULT:EXTERNAL_INTERLOCK_2") {
+    field(DESC, "External interlock 2")
+    field(INP, "@asynMask($(PORTSLOW) 1 32)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+
+## ----- States & modes (register 0x0022, PORTSLOW REGOFFSET 2) -----
+record(bi, "$(P):$(R):STATE:LOCAL") {
+    field(DESC, "Local (1) / Remote (0)")
+    field(INP, "@asynMask($(PORTSLOW) 2 1)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):STATE:STANDBY") {
+    field(DESC, "Standby status")
+    field(INP, "@asynMask($(PORTSLOW) 2 2)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):STATE:ON") {
+    field(DESC, "On status")
+    field(INP, "@asynMask($(PORTSLOW) 2 4)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):STATE:FAULT_SUM") {
+    field(DESC, "Fault Sum (logical OR of faults)")
+    field(INP, "@asynMask($(PORTSLOW) 2 8)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):STATE:MODE_PULSED") {
+    field(DESC, "Mode: Pulsed (1) / DC (0)")
+    field(INP, "@asynMask($(PORTSLOW) 2 16)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+record(bi, "$(P):$(R):STATE:POLARITY_NEGATIVE") {
+    field(DESC, "Polarity Negative (1) / Positive (0)")
+    field(INP, "@asynMask($(PORTSLOW) 2 32)BINARY_INPUT")
+    field(SCAN, "I/O Intr")
+}
+
+# End of maccaferriPS.db
