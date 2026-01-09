@@ -1,0 +1,23 @@
+file "ICPDASRly.template"
+{
+    pattern { P,R, NUM,   get_port,   set_port  }
+            {$(P), $(R), 0,    $(get_port),    $(set_port)    }
+            {$(P), $(R), 1,    $(get_port),    $(set_port)    }
+            {$(P), $(R), 2,    $(get_port),    $(set_port)   }
+            {$(P), $(R), 3,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 4,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 5,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 6,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 7,    $(get_port),    $(set_port)     }
+            
+}
+
+
+file "icpdasVersion.template"
+{
+    pattern {P,     R,   WHAT, REGOFFSET,PORT}
+            {$(P),  $(R), "OS",    0,  $(PORT)}
+            {$(P),  $(R), "FW",    1,   $(PORT)}
+            {$(P),  $(R), "IO",    2,   $(PORT)}
+            
+}

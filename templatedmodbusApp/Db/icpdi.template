@@ -1,0 +1,19 @@
+
+
+record(bi, "$(P):$(R):$(ID)_RB")
+{
+    field(DESC, "DI$(REGOFFSET)")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORT) $(REGOFFSET) 1)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):$(ID)_CNT_RB")
+{
+    field(DESC, "CNT DI$(REGOFFSET)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORTCNT) $(REGOFFSET2X) $(TIMEOUT=1000))INT32_LE")
+    field(SCAN, "I/O Intr")
+}

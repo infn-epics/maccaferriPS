@@ -1,0 +1,13 @@
+file "modbusAI.template"
+{
+    pattern {P, R, ID, REGOFFSET, PORT}
+            {MODBUS, Device, AI0, 0, MODBUS_AI}
+            {MODBUS, Device, AI1, 1, MODBUS_AI}
+}
+
+file "modbusDO.template"
+{
+    pattern {P, R, ID, REGOFFSET, PORT}
+            {MODBUS, Device, DO0, 0, MODBUS_DO}
+            {MODBUS, Device, DO1, 1, MODBUS_DO}
+}

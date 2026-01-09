@@ -1,0 +1,52 @@
+
+record(ai, "$(P):$(R):$(ID)_RB")
+{
+    field(DESC, "AI$(REGOFFSET)")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P):$(R):$(ID):VOLT_RB")
+}
+record(ai, "$(P):$(R):$(ID)_MAX_RB")
+{
+    field(DESC, "AI$(REGOFFSET)")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORTMAX) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P):$(R):$(ID):VOLT_MAX_RB")
+}
+record(ai, "$(P):$(R):$(ID)_MIN_RB")
+{
+    field(DESC, "AI$(REGOFFSET)")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORTMIN) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P):$(R):$(ID):VOLT_MIN_RB")   
+}
+
+record(calc, "$(P):$(R):$(ID):VOLT_RB")
+{
+    field(DESC, "AI$(REGOFFSET) in Volts")
+    field(INPA, "$(P):$(R):$(ID)_RB")
+    field(CALC, "A / 32768. * $(maxscale=10.)")
+    field(PREC, "3")
+    field(EGU, "V")
+}
+record(calc, "$(P):$(R):$(ID):VOLT_MAX_RB")
+{
+    field(DESC, "AI$(REGOFFSET) MAX in Volts")
+    field(INPA, "$(P):$(R):$(ID)_MAX_RB")
+    field(CALC, "A / 32768. * $(maxscale=10.)")
+    field(PREC, "3")
+    field(EGU, "V")
+}
+record(calc, "$(P):$(R):$(ID):VOLT_MIN_RB")
+{
+    field(DESC, "AI$(REGOFFSET) MIN in Volts")
+    field(INPA, "$(P):$(R):$(ID)_MIN_RB")
+    field(CALC, "A / 32768. * $(maxscale=10.)")
+    field(PREC, "3")
+    field(EGU, "V")
+}
+
+

@@ -1,0 +1,184 @@
+# ICPDASRly.template
+# Template database for the ICPDAS PET-7067 Relays in use at STAR.
+# Send a pulse for 'width' seconds via the HIGH.
+# francesco.prelz@mi.infn.it - 
+#
+# substitutions:
+# device   - device name
+# get_port - modbus 'read coils' port
+# set_port - modbus 'force single coil' port
+# width    - pulse width, in seconds.
+#
+################################################################################
+# Extract from startup script to create modbus ports
+#
+# drvAsynIPPortConfigure ("ICP1_IP", "icprly-gv1.star.unical.it:502", 0, 0, 1)
+# modbusInterposeConfig  ("ICP1_IP", 0, 255, 0)
+# drvModbusAsynConfigure ("ICP1_GET", "ICP1_IP", 1, 1, 0,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_SET", "ICP1_IP", 1, 5, 0,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_PWRONSET",   "ICP1_IP", 1, 5, 235,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_PWRONWRITE", "ICP1_IP", 1, 5, 231,  1, 0, 1000, "ICPDAS")
+#
+################################################################################
+# relay control
+#
+record(bi, "$(device):RELAY0_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 0 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY0_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 0 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY1_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 1 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY1_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 1 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY2_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 2 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY2_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 2 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY3_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 3 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY3_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 3 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY4_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 4 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY4_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 4 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY5_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 5 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY5_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 5 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY6_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 6 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY6_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 6 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+
+record(bi, "$(device):RELAY7_RB") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 7 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+}
+record(bo, "$(device):RELAY7_PULSE") 
+{
+    field(DESC, "On/Off")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 7 1)")
+    field(HIGH, "$(width)")
+    field(ONAM, "ON")
+    field(ZNAM, "OFF")
+    field(SCAN, "Passive")
+}
+

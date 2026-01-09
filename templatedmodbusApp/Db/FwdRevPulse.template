@@ -1,0 +1,39 @@
+# FwdRevPulse.template
+# Template database for generating one-shot pulses on another PV,
+# e.g. for ICPDAS PET-7067 Relays in use at STAR.
+# francesco.prelz@mi.infn.it -  July 25th, 2023
+#
+# substitutions:
+# device    - device name
+# pulse_fwd - relay 'pulse' PV to control for state 'Normal'
+# pulse_rev - relay 'pulse' PV to control for state 'Reverse'
+# width     - minimum action time for relay (seconds)
+#
+record(bo, "$(device):DIR") 
+{
+    field(DESC, "$(device) Normal/Reverse")
+# TODO: Init with current PR state from Digital Input.
+    field(ZNAM, "Normal")
+    field(ONAM, "Reverse")
+    field(FLNK, "$(device):FWDACT PP MS")
+}
+
+record(calcout, "$(device):FWDACT") 
+{
+    field(DESC, "(device) Action Forward")
+    field(INPA, "$(device):DIR")
+    field(CALC, "A")
+    field(OOPT, "On Change")
+    field(OUT,  "$(device):ACTION PP MS")
+}
+
+record(seq, "$(device):ACTION") 
+{
+    field(SELM, "Specified")
+    field(SELL, "$(device):DIR.RVAL NPP")
+    field(DOL0, "1")
+    field(LNK0, "$(pulse_fwd) PP MS")
+    field(DOL1, "1")
+    field(LNK1, "$(pulse_rev) PP MS")
+}
+

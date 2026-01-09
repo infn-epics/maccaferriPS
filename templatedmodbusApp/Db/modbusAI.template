@@ -1,0 +1,7 @@
+record(ai, "$(P):$(R):AI$(ID)_RB")
+{
+    field(DESC, "Analog Input $(ID)")
+    field(DTYP, "asynFloat64")
+    field(INP, "@asyn($(PORT) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "I/O Intr")
+}

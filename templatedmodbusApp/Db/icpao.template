@@ -1,0 +1,43 @@
+
+record(ao, "$(P):$(R):$(ID)")
+{
+    field(DESC, "$(ID) SET RAW")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(WPORT) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "Passive")
+}
+record(ai, "$(P):$(R):$(ID)_RB")
+{
+    field(DESC, "$(ID) ReadBack")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(RPORT) $(REGOFFSET) $(TIMEOUT=1000))INT16")
+    field(SCAN, "I/O Intr")
+    field(FLNK, "$(P):$(R):$(ID):VOLT_RB")   
+
+}
+
+record(calc, "$(P):$(R):$(ID):VOLT_RB")
+{
+    field(DESC, "Analog Input $(REGOFFSET) in Volts")
+    field(INPA, "$(P):$(R):$(ID)_RB")
+    field(CALC, "A / 32768. * $(maxscale=10.)")
+    field(PREC, "3")
+    field(EGU, "V")
+}
+
+record(ao, "$(P):$(R):$(ID):VOLT")
+{
+    field(DESC, "Set Analog Output $(REGOFFSET) in Volts")
+    field(DTYP, "Soft Channel")
+    field(EGU, "V")
+    field(PREC, "3")
+    field(FLNK, "$(P):$(R):$(ID):VOLT_SET")        # Trigger processing of the raw ao record
+}
+
+record(calcout, "$(P):$(R):$(ID):VOLT_SET")
+{
+    field(DESC, "Convert Volts to Raw Integer")
+    field(INPA, "$(P):$(R):$(ID):VOLT.VAL NPP")  # Read volts input
+    field(CALC, "A * 32768. / $(maxscale=10.)")        # Convert volts to raw integer
+    field(OUT, "$(P):$(R):$(ID).VAL PP")               # Write to raw ao record
+}

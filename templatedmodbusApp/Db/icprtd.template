@@ -1,0 +1,25 @@
+record(ai, "$(P):$(R):$(ID)_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "RTD$(ID)")
+    field(INP, "@asynMask($(PORT) $(REGOFFSET) 16)INT16")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P):$(R):$(ID)_MAX_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "RTD $(ID) Max histo")
+    field(INP, "@asynMask($(PORTMAX) $(REGOFFSET) 16)INT16")
+    field(SCAN, "I/O Intr")
+
+}
+record(ai, "$(P):$(R):$(ID)_MIN_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "RTD$(ID) Min histo")
+    field(INP, "@asynMask($(PORTMIN) $(REGOFFSET) 16)INT16")
+    field(SCAN, "I/O Intr")
+
+}
+

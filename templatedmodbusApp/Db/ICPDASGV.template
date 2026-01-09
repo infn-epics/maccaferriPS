@@ -1,0 +1,168 @@
+# ICPDASGV.template
+# Template database for the ICPDAS PET-7067 Relays in use at STAR -
+# specialised for gate valves, whose 'ON' status means that the valve
+# is open.
+# francesco.prelz@mi.infn.it - July 17th, 2023
+#
+# substitutions:
+# device   - device name
+# get_port - modbus 'read coils' port
+# set_port - modbus 'force single coil' port
+#
+################################################################################
+# Extract from startup script to create modbus ports
+#
+# drvAsynIPPortConfigure ("ICP1_IP", "icprly-gv1.star.unical.it:502", 0, 0, 1)
+# modbusInterposeConfig  ("ICP1_IP", 0, 255, 0)
+# drvModbusAsynConfigure ("ICP1_GET", "ICP1_IP", 1, 1, 0,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_SET", "ICP1_IP", 1, 5, 0,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_PWRONSET",   "ICP1_IP", 1, 5, 235,  8, 0, 1000, "ICPDAS")
+# drvModbusAsynConfigure ("ICP1_PWRONWRITE", "ICP1_IP", 1, 5, 231,  1, 0, 1000, "ICPDAS")
+#
+################################################################################
+# relay control
+#
+record(bi, "$(device):VALVE0_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 0 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE0_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 0 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE1_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 1 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE1_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 1 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE2_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 2 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE2_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 2 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE3_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 3 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE3_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 3 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE4_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 4 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE4_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 4 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE5_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 5 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE5_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 5 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE6_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 6 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE6_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 6 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+
+record(bi, "$(device):VALVE7_RB") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(get_port) 7 1)")
+    field(SCAN, "I/O Intr")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+record(bo, "$(device):VALVE7_SP") 
+{
+    field(DESC, "Open/Closed")
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(set_port) 7 1)")
+    field(ONAM, "OPEN")
+    field(ZNAM, "CLOSED")
+}
+

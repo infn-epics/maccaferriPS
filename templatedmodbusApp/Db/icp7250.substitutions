@@ -1,0 +1,34 @@
+file "icpdi.template"
+{
+    pattern {P,     R,   ID, REGOFFSET,REGOFFSET2X PORT,PORTCNT   }
+            {$(P),  $(R), "DI0",    0,      0,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI1",    1,      2,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI2",    2,      4,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI3",    3,      6,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI4",    4,      8,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI5",    5,     10,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI6",    6,     12,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI7",    7,     14,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI8",    8,     16,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI9",    9,     18,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI10",   10,    20,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI11",   11,    22,    $(DIPORT),$(CNTPORT)}
+}
+file "icpdo.template"
+{
+    pattern {P,     R,   ID, REGOFFSET, PORT}
+            {$(P),  $(R), "DO0",    0,         $(DOPORT)  }
+            {$(P),  $(R), "DO1",    1,         $(DOPORT)  }
+            {$(P),  $(R), "DO2",    2,         $(DOPORT)  }
+            {$(P),  $(R), "DO3",    3,         $(DOPORT)  }
+            {$(P),  $(R), "DO4",    4,         $(DOPORT)  }
+            {$(P),  $(R), "DO5",    5,         $(DOPORT)  }
+}
+file "icpdasVersion.template"
+{
+    pattern {P,     R,   WHAT, REGOFFSET,PORT}
+            {$(P),  $(R), "OS",    0,  $(PORTINFO)}
+            {$(P),  $(R), "FW",    1,   $(PORTINFO)}
+            {$(P),  $(R), "IO",    2,   $(PORTINFO)}
+            
+}

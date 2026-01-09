@@ -1,0 +1,42 @@
+file "ICPDASRly.template"
+{
+    pattern { P,R, NUM,   get_port,   set_port  }
+            {$(P), $(R), 0,    $(get_port),    $(set_port)    }
+            {$(P), $(R), 1,    $(get_port),    $(set_port)    }
+            {$(P), $(R), 2,    $(get_port),    $(set_port)   }
+            {$(P), $(R), 3,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 4,    $(get_port),    $(set_port)     }
+            {$(P), $(R), 5,    $(get_port),    $(set_port)     }
+}
+
+file "icpdi.template"
+{
+    pattern {P,     R,     ID, REGOFFSET,REGOFFSET2X, PORT,PORTCNT   }
+            {$(P),  $(R), "DI0",    0,     0,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI1",    1,     2,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI2",    2,     4,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI3",    3,     6,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI4",    4,     8,    $(DIPORT),$(CNTPORT)}
+            {$(P),  $(R), "DI5",    5,    10,    $(DIPORT),$(CNTPORT)}
+}
+
+#file "icpdo.template"
+#{
+#    pattern {P,     R,     ID, REGOFFSET,PORT}
+#    {$(P),  $(R), "DI0Set",    0,         $(DISetPORT)}
+#    {$(P),  $(R), "DI1Set",    1,         $(DISetPORT)}
+#    {$(P),  $(R), "DI2Set",    2,         $(DISetPORT)}
+#    {$(P),  $(R), "DI3Set",    3,         $(DISetPORT)}
+#    {$(P),  $(R), "DI4Set",    4,         $(DISetPORT)}
+#    {$(P),  $(R), "DI5Set",    5,         $(DISetPORT)}
+#}
+
+
+file "icpdasVersion.template"
+{
+    pattern {P,     R,   WHAT, REGOFFSET,PORT}
+            {$(P),  $(R), "OS",    0,  $(PORT)}
+            {$(P),  $(R), "FW",    1,   $(PORT)}
+            {$(P),  $(R), "IO",    2,   $(PORT)}
+            
+}

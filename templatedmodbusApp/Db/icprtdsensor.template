@@ -1,0 +1,102 @@
+record(ai, "$(P):$(R):$(ID)_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "RTD Sensor")
+    field(INP, "@asynMask($(PORT) $(REGOFFSET) 16)INT16")
+    field(HOPR, "$(HOPR=100)")
+    field(HIHI, "$(HIHI=100)")
+    field(HIGH, "$(HIGH=90)")
+    field(LOW, "$(LOW=20)")
+    field(LOLO, "$(LOLO=0)")
+    field(PREC, "$(PREC=3)")
+    field(LINR, "NO CONVERSION")
+    field(ASLO, "$(ASLO=1.0)")
+    field(AOFF, "$(AOFF=0)")
+    field(EGUF, "$(EGUF=100)")
+    field(EGUL, "$(EGUL=-100)")
+    field(SCAN, "$(SCAN=I/O Intr)")
+    field(EGU, "$(EGU=degC)")
+    field(FLNK, "$(P):$(R):$(ID)_Status") 
+}
+
+record(ai, "$(P):$(R):$(ID)_HWMIN_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "Temp HW Min")
+    field(INP, "@asynMask($(PORTMIN) $(REGOFFSET) 16)INT16")
+    field(HOPR, "$(HOPR=100)")
+    field(HIHI, "$(HIHI=100)")
+    field(HIGH, "$(HIGH=90)")
+    field(LOW, "$(LOW=20)")
+    field(LOLO, "$(LOLO=0)")
+    field(PREC, "$(PREC=3)")
+    field(LINR, "NO CONVERSION")
+    field(ASLO, "$(ASLO=1.0)")
+    field(AOFF, "$(AOFF=0)")
+    field(EGUF, "$(EGUF=100)")
+    field(EGUL, "$(EGUL=-100)")
+    field(SCAN, "$(SCAN=I/O Intr)")
+    field(EGU, "$(EGU=degC)")
+}
+
+record(ai, "$(P):$(R):$(ID)_HWMAX_RB")
+{
+    field(DTYP, "asynInt32")
+    field(DESC, "Temp HW Max")
+    field(INP, "@asynMask($(PORTMAX) $(REGOFFSET) 16)INT16")
+    field(HOPR, "$(HOPR=100)")
+    field(HIHI, "$(HIHI=100)")
+    field(HIGH, "$(HIGH=90)")
+    field(LOW, "$(LOW=20)")
+    field(LOLO, "$(LOLO=0)")
+    field(PREC, "$(PREC=3)")
+    field(LINR, "NO CONVERSION")
+    field(ASLO, "$(ASLO=1.0)")
+    field(AOFF, "$(AOFF=0)")
+    field(EGUF, "$(EGUF=100)")
+    field(EGUL, "$(EGUL=-100)")
+    field(SCAN, "$(SCAN=I/O Intr)")
+    field(EGU, "$(EGU=degC)")
+}
+
+record(seq, "$(P):$(R):$(ID)_Status")
+{
+    field(DOL1, "$(P):$(R):$(ID)_RB")  
+    field(LNK1, "$(P):$(R):$(ID)_AVG")  
+    field(DOL2, "$(P):$(R):$(ID)_RB")  
+    field(LNK2, "$(P):$(R):$(ID)_MAX")  
+    field(DOL3, "$(P):$(R):$(ID)_RB")  
+    field(LNK3, "$(P):$(R):$(ID)_MIN")
+}
+
+record(compress, "$(P):$(R):$(ID)_AVG")
+{
+    field(DESC, "Average Temperature Calculation")
+    field(ALG, "3")
+    field(N, "$(NELM=60)")
+    field(INP, "$(P):$(R):$(ID)_RB")
+    field(EGU, "$(EGU=degC)")
+    field(PREC, "3")
+    field(FLNK, "$(P):$(R):$(ID)_MAX") 
+}
+
+record(compress, "$(P):$(R):$(ID)_MAX")
+{
+    field(DESC, "Max Temperature Calculation")
+    field(ALG, "1")
+    field(N, "$(NELM=60)")
+    field(INP, "$(P):$(R):$(ID)_RB")
+    field(EGU, "$(EGU=degC)")
+    field(PREC, "3")
+    field(FLNK, "$(P):$(R):$(ID)_MIN")
+}
+
+record(compress, "$(P):$(R):$(ID)_MIN")
+{
+    field(DESC, "Min Temperature Calculation")
+    field(ALG, "0")
+    field(N, "$(NELM=60)")
+    field(INP, "$(P):$(R):$(ID)_RB")
+    field(EGU, "$(EGU=degC)")
+    field(PREC, "3")
+}

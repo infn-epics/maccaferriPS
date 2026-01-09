@@ -1,0 +1,11 @@
+record(ai, "$(P):$(R):$(WHAT)version_raw") {
+    field(DESC, "Raw 16-bit Version Value")
+    field(DTYP, "asynInt32")
+
+    field(INP,  "@asynMask($(PORT) $(REGOFFSET) 16)")  
+    field(PREC, "0")
+    field(PINI, "YES")
+    field(SCAN, "I/O Intr")
+
+}
+
