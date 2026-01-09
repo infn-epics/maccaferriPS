@@ -89,19 +89,27 @@ The SNL program (`maccaferriControl.st`) implements a finite state machine that 
 
 ## Configuration
 
+### Modbus Configuration
+
+The Maccaferri Power Supply uses only Modbus function codes **3** (Read Holding Registers) and **16** (Write Multiple Registers). All communication is done through holding registers:
+
+- **Commands**: Written to holding registers 0x0000-0x0001 using function code 16
+- **Setpoints**: Written to holding registers using function code 16  
+- **Readbacks**: Read from holding registers 0x0020-0x0026 using function code 3
+
 ### IOC Startup
 The IOC is configured via `iocBoot/modbusiocSample/ioc-modbus-device.cmd`:
 
 ```bash
 # Load database files
-dbLoadTemplate("db/maccaferriPS_main.template", "P=MACCA:,PORT=PS_PORT")
+dbLoadTemplate("db/maccaferriPS_main.template", "P=MACCA:,PORT_CMD_RO=MACCA_CMD_RO,PORT_CMD_WO=MACCA_CMD_WO,PORTFAST=MACCA_FAST_AI,PORTSLOW=MACCA_SLOW_AI,TIMEOUT=2000")
 dbLoadTemplate("db/maccaferriPS_unimag.template", "P=MACCA:")
 
 # Start IOC
 iocInit()
 ```
 
-### Modbus Configuration
+### Modbus Port Configuration
 Configure the Modbus port in the startup script:
 ```bash
 # RTU example
@@ -113,6 +121,12 @@ asynSetOption("PS_PORT", 0, "data", "8")
 
 # TCP example
 drvAsynIPPortConfigure("PS_PORT", "192.168.1.100:502", 0, 0, 100)
+
+# Configure Modbus ports (function codes 3 and 16 only)
+drvModbusAsynConfigure("CMD_RO", "PS_PORT", 1, 3, 0, 2, 0, 1000, "PS")
+drvModbusAsynConfigure("CMD_WO", "PS_PORT", 1, 16, 0, 2, 0, 0, "PS") 
+drvModbusAsynConfigure("FAST_AI", "PS_PORT", 1, 3, 35, 4, 0, 40, "PS")
+drvModbusAsynConfigure("SLOW_AI", "PS_PORT", 1, 3, 32, 3, 0, 1000, "PS")
 ```
 
 ## Usage Examples
