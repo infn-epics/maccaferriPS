@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Maccaferri Debug Panel $(R)</name>
+  <macros>
+  </macros>
+  <width>1000</width>
+  <height>900</height>
+  <background_color>
+    <color red="240" green="240" blue="240">
+    </color>
+  </background_color>
+  
+  <!-- Title -->
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <text>Maccaferri Power Supply Debug Panel $(R)</text>
+    <x>10</x>
+    <y>10</y>
+    <width>600</width>
+    <height>40</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="20.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- Commands Panel -->
+  <widget type="group" version="3.0.0">
+    <name>Commands Group</name>
+    <x>10</x>
+    <y>60</y>
+    <width>480</width>
+    <height>280</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Commands Label</name>
+      <text>Raw Commands (Debug)</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Standby -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_STANDBY</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_STANDBY</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>CMD_STANDBY</text>
+      <x>10</x>
+      <y>45</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- On -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_ON</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_ON</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>CMD_ON</text>
+      <x>130</x>
+      <y>45</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Off -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_OFF</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_OFF</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>CMD_OFF</text>
+      <x>250</x>
+      <y>45</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Reset -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_RESET</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_RESET</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>CMD_RESET</text>
+      <x>370</x>
+      <y>45</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Mode DC -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_MODE_DC</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_MODE_DC</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>MODE_DC</text>
+      <x>10</x>
+      <y>80</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Mode Pulsed -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_MODE_PULSED</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_MODE_PULSED</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>MODE_PULSED</text>
+      <x>130</x>
+      <y>80</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Pola Positive -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_POLA_POS</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_POLA_POSITIVE</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>POLA_POS</text>
+      <x>250</x>
+      <y>80</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Pola Negative -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_POLA_NEG</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_POLA_NEGATIVE</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>POLA_NEG</text>
+      <x>370</x>
+      <y>80</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Start Ramp -->
+    <widget type="action_button" version="3.0.0">
+      <name>CMD_START_RAMP</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(P):$(R):CMD_START_RAMP</pv_name>
+          <value>1</value>
+        </action>
+      </actions>
+      <text>START_RAMP</text>
+      <x>10</x>
+      <y>115</y>
+      <width>110</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Current Setpoint -->
+    <widget type="label" version="2.0.0">
+      <name>CURR_SET Label</name>
+      <text>CURR_SET (A):</text>
+      <x>10</x>
+      <y>155</y>
+      <width>110</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textentry" version="3.0.0">
+      <name>CURR_SET Entry</name>
+      <pv_name>$(P):$(R):CURR_SET</pv_name>
+      <x>130</x>
+      <y>153</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Current Setpoint UNIMAG -->
+    <widget type="label" version="2.0.0">
+      <name>CURRENT_SP Label</name>
+      <text>CURRENT_SP (A):</text>
+      <x>10</x>
+      <y>190</y>
+      <width>110</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textentry" version="3.0.0">
+      <name>CURRENT_SP Entry</name>
+      <pv_name>$(P):$(R):CURRENT_SP</pv_name>
+      <x>130</x>
+      <y>188</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+  </widget>
+  
+  <!-- Status Panel -->
+  <widget type="group" version="3.0.0">
+    <name>Status Group</name>
+    <x>510</x>
+    <y>60</y>
+    <width>480</width>
+    <height>280</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Status Label</name>
+      <text>Status Bits (Debug)</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Power On -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_POWER_ON</name>
+      <pv_name>$(P):$(R):STAT_POWER_ON</pv_name>
+      <x>10</x>
+      <y>45</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_POWER_ON Label</name>
+      <text>STAT_POWER_ON</text>
+      <x>100</x>
+      <y>47</y>
+    </widget>
+    
+    <!-- Standby -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_STANDBY</name>
+      <pv_name>$(P):$(R):STAT_STANDBY</pv_name>
+      <x>10</x>
+      <y>70</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_STANDBY Label</name>
+      <text>STAT_STANDBY</text>
+      <x>100</x>
+      <y>72</y>
+    </widget>
+    
+    <!-- Faulty -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_FAULTY</name>
+      <pv_name>$(P):$(R):STAT_FAULTY</pv_name>
+      <x>10</x>
+      <y>95</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_FAULTY Label</name>
+      <text>STAT_FAULTY</text>
+      <x>100</x>
+      <y>97</y>
+    </widget>
+    
+    <!-- Pola Positive -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_POLA_POS</name>
+      <pv_name>$(P):$(R):STAT_POLA_POSITIVE</pv_name>
+      <x>10</x>
+      <y>120</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_POLA_POS Label</name>
+      <text>STAT_POLA_POSITIVE</text>
+      <x>100</x>
+      <y>122</y>
+    </widget>
+    
+    <!-- Pola Negative -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_POLA_NEG</name>
+      <pv_name>$(P):$(R):STAT_POLA_NEGATIVE</pv_name>
+      <x>10</x>
+      <y>145</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_POLA_NEG Label</name>
+      <text>STAT_POLA_NEGATIVE</text>
+      <x>100</x>
+      <y>147</y>
+    </widget>
+    
+    <!-- Mode DC -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_MODE_DC</name>
+      <pv_name>$(P):$(R):STAT_MODE_DC</pv_name>
+      <x>10</x>
+      <y>170</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_MODE_DC Label</name>
+      <text>STAT_MODE_DC</text>
+      <x>100</x>
+      <y>172</y>
+    </widget>
+    
+    <!-- Ramp Active -->
+    <widget type="textupdate" version="2.0.0">
+      <name>STAT_RAMP_ACTIVE</name>
+      <pv_name>$(P):$(R):STAT_RAMP_ACTIVE</pv_name>
+      <x>10</x>
+      <y>195</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>STAT_RAMP_ACTIVE Label</name>
+      <text>STAT_RAMP_ACTIVE</text>
+      <x>100</x>
+      <y>197</y>
+    </widget>
+    
+    <!-- Raw Readbacks -->
+    <widget type="label" version="2.0.0">
+      <name>Readback Section</name>
+      <text>Readbacks:</text>
+      <x>10</x>
+      <y>225</y>
+      <width>100</width>
+      <height>20</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>CURR_RB</name>
+      <pv_name>$(P):$(R):CURR_RB</pv_name>
+      <x>10</x>
+      <y>250</y>
+      <width>80</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>CURR_RB Label</name>
+      <text>CURR_RB (A)</text>
+      <x>100</x>
+      <y>252</y>
+    </widget>
+  </widget>
+  
+  <!-- All Faults -->
+  <widget type="group" version="3.0.0">
+    <name>Faults Details Group</name>
+    <x>10</x>
+    <y>360</y>
+    <width>980</width>
+    <height>160</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Faults Label</name>
+      <text>Fault Details</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Fault indicators in grid -->
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_UV</name>
+      <pv_name>$(P):$(R):STAT_FAULT_UNDERVOLTAGE</pv_name>
+      <x>10</x>
+      <y>45</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_UV Label</name>
+      <text>UNDERVOLTAGE</text>
+      <x>50</x>
+      <y>47</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_OC</name>
+      <pv_name>$(P):$(R):STAT_FAULT_OVERCURRENT</pv_name>
+      <x>200</x>
+      <y>45</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_OC Label</name>
+      <text>OVERCURRENT</text>
+      <x>240</x>
+      <y>47</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_OT</name>
+      <pv_name>$(P):$(R):STAT_FAULT_OVERTEMP</pv_name>
+      <x>400</x>
+      <y>45</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_OT Label</name>
+      <text>OVERTEMP</text>
+      <x>440</x>
+      <y>47</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_COMM</name>
+      <pv_name>$(P):$(R):STAT_FAULT_COMM</pv_name>
+      <x>600</x>
+      <y>45</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_COMM Label</name>
+      <text>COMMUNICATION</text>
+      <x>640</x>
+      <y>47</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_INPUT</name>
+      <pv_name>$(P):$(R):STAT_FAULT_INPUT</pv_name>
+      <x>800</x>
+      <y>45</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_INPUT Label</name>
+      <text>INPUT</text>
+      <x>840</x>
+      <y>47</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_RELAY</name>
+      <pv_name>$(P):$(R):STAT_FAULT_RELAY</pv_name>
+      <x>10</x>
+      <y>75</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_RELAY Label</name>
+      <text>RELAY</text>
+      <x>50</x>
+      <y>77</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_OTHER</name>
+      <pv_name>$(P):$(R):STAT_FAULT_OTHER</pv_name>
+      <x>200</x>
+      <y>75</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_OTHER Label</name>
+      <text>OTHER</text>
+      <x>240</x>
+      <y>77</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_BREAKER</name>
+      <pv_name>$(P):$(R):STAT_FAULT_BREAKER</pv_name>
+      <x>400</x>
+      <y>75</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_BREAKER Label</name>
+      <text>BREAKER</text>
+      <x>440</x>
+      <y>77</y>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>FAULT_GROUND</name>
+      <pv_name>$(P):$(R):STAT_FAULT_GROUND</pv_name>
+      <x>600</x>
+      <y>75</y>
+      <width>30</width>
+      <height>20</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>FAULT_GROUND Label</name>
+      <text>GROUND</text>
+      <x>640</x>
+      <y>77</y>
+    </widget>
+  </widget>
+  
+  <!-- Back Button -->
+  <widget type="action_button" version="3.0.0">
+    <name>Back Button</name>
+    <actions>
+      <action type="open_display">
+        <macros>P=$(P),R=$(R)</macros>
+        <name>maccaferriPS.bob</name>
+        <mode>REPLACE</mode>
+      </action>
+    </actions>
+    <text>Back to Main</text>
+    <x>10</x>
+    <y>850</y>
+    <width>120</width>
+    <height>30</height>
+  </widget>
+</display>

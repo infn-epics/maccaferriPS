@@ -7,18 +7,15 @@ include $(TOP)/configure/CONFIG
 # Use typed rset structure (see 3.16.1 release notes)
 USR_CPPFLAGS += -DUSE_TYPED_RSET
 
-# Build an IOC support library
-# LIBRARY_IOC += templatedmodbusSupport
+# Build an IOC support library for SNL and Sequencer
+LIBRARY_IOC += maccaferriPSSupport
 
-# Link locally-provided code into the support library,
-# rather than directly into the IOC application, that
-# causes problems on Windows DLL builds
-#templatedmodbusSupport_SRCS += dbSubExample.c
-#templatedmodbusSupport_SRCS += devtemplatedmodbusVersion.c
-#templatedmodbusSupport_SRCS += templatedmodbusHello.c
-#templatedmodbusSupport_SRCS += initTrace.c
+# Link in SNL program
+maccaferriPSSupport_DBD += maccaferriControl.dbd
+maccaferriPSSupport_SRCS += maccaferriControl.st
+maccaferriPSSupport_LIBS += seq pv
 
-templatedmodbusSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
+maccaferriPSSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 # Auto-generate a header file containing a version string.
 # Version comes from the VCS if available, else date+time.
@@ -32,23 +29,26 @@ PROD_IOC = maccaferriPS
 # maccaferriPS.dbd will be created and installed
 DBD += maccaferriPS.dbd
 
+# Ensure support dbd is built before main dbd
+$(COMMON_DIR)/maccaferriPS.dbd: $(COMMON_DIR)/maccaferriPSSupport.dbd
+
 # maccaferriPS.dbd will include these files:
 maccaferriPS_DBD += base.dbd
 maccaferriPS_DBD += modbusSupport.dbd
 maccaferriPS_DBD += asyn.dbd
 maccaferriPS_DBD += drvAsynIPPort.dbd
 maccaferriPS_DBD += drvAsynSerialPort.dbd
+maccaferriPS_DBD += maccaferriPSSupport.dbd
 maccaferriPS_SRCS += maccaferriPS_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point where needed
 maccaferriPS_SRCS_DEFAULT += maccaferriPSMain.cpp
 maccaferriPS_SRCS_vxWorks += -nil-
 
-# Link in the code from our support library
+# Link in the code from our support libraries
+maccaferriPS_LIBS += maccaferriPSSupport
 maccaferriPS_LIBS += asyn
 maccaferriPS_LIBS += modbus
-# To build SNL programs, SNCSEQ must be defined
-# in the <top>/configure/RELEASE file
 
 # Link QSRV (pvAccess Server) if available
 ifdef EPICS_QSRV_MAJOR_VERSION

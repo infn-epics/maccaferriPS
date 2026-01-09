@@ -41,11 +41,12 @@ drvModbusAsynConfigure("MACCF_FAST_AI", "MACCF_ASYN", 1, 4, 35, 4, 0, 40, "MACCA
 drvModbusAsynConfigure("MACCF_SLOW_AI", "MACCF_ASYN", 1, 4, 32, 3, 0, 1000, "MACCAFERRIPS")
 
 # Load DB records: pass port substitution names and common parameters
-# Usage: P=prefix, R=DeviceName, PORTFAST, PORTSLOW, PORTCMD, WPORT, COIL_W, SLAVE
-# Example substitution values are shown below; adjust as required when loading
+# Usage: P=prefix, R=DeviceName, PORTFAST, PORTSLOW, PORTCMD_WO, TIMEOUT
+# Main template (commands, states, readbacks)
+dbLoadRecords("$(TOP)/db/maccaferriPS_main.template", "P=MACCF,R=PS01,PORT_CMD_RO=MACCF_CMD_RO,PORT_CMD_WO=MACCF_CMD_WO,PORTFAST=MACCF_FAST_AI,PORTSLOW=MACCF_SLOW_AI,TIMEOUT=2000")
 
-# Load database records with substitution parameters (example values)
-dbLoadRecords("$(TOP)/db/maccaferriPS.db", "P=MACCF,R=PS01,PORTFAST=MACCF_FAST_AI,PORTSLOW=MACCF_SLOW_AI,PORTCMD=MACCF_CMD_RO,WPORT=MACCF_CMD_WO,COIL_W=MACCF_COIL_W,SLAVE=1,TIMEOUT=2000,WPOLL=0,RPOLL=40")
+# UNIMAG interface template (signed current control with auto polarity)
+dbLoadRecords("$(TOP)/db/maccaferriPS_unimag.template", "P=MACCF,R=PS01")
 
 # Initialize IOC
 iocInit()
@@ -61,5 +62,3 @@ iocInit()
 # 16-bit word    Write Single Register          6
 # 16-bit word    Write Multiple Registers       16
 # 16-bit word    Read/Write Multiple Registers  23
-
-iocInit()

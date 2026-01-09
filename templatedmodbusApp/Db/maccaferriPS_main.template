@@ -1,0 +1,414 @@
+# Maccaferri Power Supply EPICS Modbus Template
+# Main interface with command execution and state tracking
+# Based on Modbus register mapping from specification CS-20051109.1
+# 
+# Holding registers (commands): 0x0000-0x001F
+# Input registers (readbacks): 0x0020-0x003F
+# Fast AI readbacks (40ms poll): 0x0023-0x0026
+# Slow AI readbacks (1000ms poll): 0x0020-0x0022
+
+################### Command Word #1 (Register 0x0000 / 0x00) - Write ####################
+# Individual command bits implemented as coils (bo records)
+
+record(bo, "$(P):$(R):CMD_STANDBY")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Standby Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Standby")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_ON")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x2 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Power On Command")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_OFF")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Off Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Off")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_RESET")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x8 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Reset Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Reset")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_START_RAMP")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x10 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Start Ramp Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Start Ramp")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_MODE_DC")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x20 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "DC Mode Command")
+    field(ZNAM, "Off")
+    field(ONAM, "DC Mode")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_MODE_PULSED")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x40 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Pulsed Mode Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Pulsed Mode")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_POLA_POSITIVE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x80 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Polarity Positive Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Positive")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bo, "$(P):$(R):CMD_POLA_NEGATIVE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x100 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Polarity Negative Command")
+    field(ZNAM, "Off")
+    field(ONAM, "Negative")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+################### Command Word #2 (Register 0x0001) - Current Setpoint ####################
+
+record(ao, "$(P):$(R):CURR_SET")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT_CMD_WO) 1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Current Setpoint")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(DRVH, "$(MAX_CURR=330)")
+    field(DRVL, "$(MIN_CURR=0)")
+    field(HOPR, "$(MAX_CURR=330)")
+    field(LOPR, "$(MIN_CURR=0)")
+}
+
+################### Status/Readback Word #1 (Register 0x0020) - Faults/States ####################
+# Fault bits in register 0x0020
+record(bi, "$(P):$(R):STAT_FAULT_UNDERVOLTAGE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Undervoltage Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_OVERCURRENT")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x2 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Overcurrent Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_OVERTEMP")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Overtemperature Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_COMM")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x8 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Communication Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_INPUT")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x10 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Input Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_RELAY")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x20 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Relay Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_OTHER")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 0 0x40 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Other Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+# Aggregate fault indicator
+record(calc, "$(P):$(R):STAT_FAULTY")
+{
+    field(DESC, "Any Fault Detected")
+    field(INPA, "$(P):$(R):STAT_FAULT_UNDERVOLTAGE CP")
+    field(INPB, "$(P):$(R):STAT_FAULT_OVERCURRENT CP")
+    field(INPC, "$(P):$(R):STAT_FAULT_OVERTEMP CP")
+    field(INPD, "$(P):$(R):STAT_FAULT_COMM CP")
+    field(INPE, "$(P):$(R):STAT_FAULT_INPUT CP")
+    field(INPF, "$(P):$(R):STAT_FAULT_RELAY CP")
+    field(INPG, "$(P):$(R):STAT_FAULT_OTHER CP")
+    field(CALC, "A|B|C|D|E|F|G")
+}
+
+################### Status/Readback Word #2 (Register 0x0021) - More Faults ####################
+# Additional fault bits
+record(bi, "$(P):$(R):STAT_FAULT_BREAKER")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 1 0x1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Breaker Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_GROUND")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 1 0x2 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Ground Fault")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Ok")
+    field(ONAM, "Fault")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+record(bi, "$(P):$(R):STAT_FAULT_INHIBIT")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 1 0x4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Inhibit Active")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "Inhibited")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MINOR")
+}
+
+record(bi, "$(P):$(R):STAT_STANDBY")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 1 0x8 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Standby Status")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "Standby")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_POWER_ON")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 1 0x10 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Power On Status")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+################### Status/Readback Word #3 (Register 0x0022) - Mode/Polarity Status ####################
+
+record(bi, "$(P):$(R):STAT_MODE_DC")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "DC Mode Active")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_MODE_PULSED")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x2 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Pulsed Mode Active")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_POLA_POSITIVE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Polarity Positive")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Negative")
+    field(ONAM, "Positive")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_POLA_NEGATIVE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x8 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Polarity Negative")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_RAMP_ACTIVE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x10 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Ramp Active")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Idle")
+    field(ONAM, "Ramping")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+record(bi, "$(P):$(R):STAT_REMOTE")
+{
+    field(DTYP, "asynUInt32Digital")
+    field(INP,  "@asynMask($(PORTSLOW) 2 0x20 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Remote Control Active")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Local")
+    field(ONAM, "Remote")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "NO_ALARM")
+}
+
+################### Fast Readbacks (40ms poll - 25Hz) - Registers 0x0023-0x0026 ####################
+# Current readback (AI, Modbus int16)
+record(ai, "$(P):$(R):CURR_RB")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORTFAST) 3 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Current Readback")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+    field(ASLO, "0.001")
+    field(AOFF, "0")
+}
+
+# Output current readback
+record(ai, "$(P):$(R):OUTPUT_CURRENT_RB")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORTFAST) 4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Output Current Readback")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+    field(ASLO, "0.001")
+    field(AOFF, "0")
+}
+
+# Output voltage readback
+record(ai, "$(P):$(R):OUTPUT_VOLTAGE_RB")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORTFAST) 5 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Output Voltage Readback")
+    field(EGU,  "V")
+    field(PREC, "2")
+    field(SCAN, "I/O Intr")
+    field(ASLO, "0.01")
+    field(AOFF, "0")
+}
+
+# Ground current readback
+record(ai, "$(P):$(R):GROUND_CURRENT_RB")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORTFAST) 6 $(TIMEOUT=1000))MODBUS_DATA")
+    field(DESC, "Ground Current Readback")
+    field(EGU,  "A")
+    field(PREC, "3")
+    field(SCAN, "I/O Intr")
+    field(ASLO, "0.001")
+    field(AOFF, "0")
+}

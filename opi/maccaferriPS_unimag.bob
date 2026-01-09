@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Maccaferri UNIMAG Interface $(R)</name>
+  <macros>
+  </macros>
+  <width>900</width>
+  <height>700</height>
+  <background_color>
+    <color red="240" green="240" blue="240">
+    </color>
+  </background_color>
+  
+  <!-- Title -->
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <text>Maccaferri Power Supply UNIMAG Interface $(R)</text>
+    <x>10</x>
+    <y>10</y>
+    <width>600</width>
+    <height>40</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="24.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- Description -->
+  <widget type="label" version="2.0.0">
+    <name>Description</name>
+    <text>Simplified interface with automatic polarity control. Set positive/negative current and system handles polarity switching automatically.</text>
+    <x>10</x>
+    <y>55</y>
+    <width>850</width>
+    <height>35</height>
+    <font>
+      <font family="Liberation Sans" style="ITALIC" size="11.0">
+      </font>
+    </font>
+  </widget>
+  
+  <!-- State Control Panel -->
+  <widget type="group" version="3.0.0">
+    <name>State Control Group</name>
+    <x>10</x>
+    <y>100</y>
+    <width>420</width>
+    <height>200</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>State Title</name>
+      <text>Power Supply State</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Current State Readback -->
+    <widget type="label" version="2.0.0">
+      <name>State RB Label</name>
+      <text>Current State:</text>
+      <x>15</x>
+      <y>50</y>
+      <width>100</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>State RB Value</name>
+      <pv_name>$(P):$(R):STATE_RB</pv_name>
+      <x>125</x>
+      <y>48</y>
+      <width>150</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Interlock Status -->
+    <widget type="label" version="2.0.0">
+      <name>Interlock Label</name>
+      <text>Interlock:</text>
+      <x>15</x>
+      <y>85</y>
+      <width>100</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>Interlock Value</name>
+      <pv_name>$(P):$(R):INTERLOCKED</pv_name>
+      <x>125</x>
+      <y>83</y>
+      <width>100</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- State Selection -->
+    <widget type="label" version="2.0.0">
+      <name>State SP Label</name>
+      <text>Set State:</text>
+      <x>15</x>
+      <y>125</y>
+      <width>100</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="combo" version="2.0.0">
+      <name>State SP Combo</name>
+      <pv_name>$(P):$(R):STATE_SP</pv_name>
+      <x>125</x>
+      <y>120</y>
+      <width>150</width>
+      <height>30</height>
+    </widget>
+  </widget>
+  
+  <!-- Current Control Panel -->
+  <widget type="group" version="3.0.0">
+    <name>Current Control Group</name>
+    <x>450</x>
+    <y>100</y>
+    <width>420</width>
+    <height>200</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Current Title</name>
+      <text>Current Control</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Current Setpoint -->
+    <widget type="label" version="2.0.0">
+      <name>Current SP Label</name>
+      <text>Current Setpoint (A):</text>
+      <x>15</x>
+      <y>50</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textentry" version="3.0.0">
+      <name>Current SP Entry</name>
+      <pv_name>$(P):$(R):CURRENT_SP</pv_name>
+      <x>170</x>
+      <y>48</y>
+      <width>100</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Polarity Status -->
+    <widget type="label" version="2.0.0">
+      <name>Polarity Label</name>
+      <text>Polarity:</text>
+      <x>15</x>
+      <y>85</y>
+      <width>100</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>Polarity Value</name>
+      <pv_name>$(P):$(R):STAT_POLA_POSITIVE</pv_name>
+      <x>170</x>
+      <y>83</y>
+      <width>80</width>
+      <height>25</height>
+    </widget>
+    
+    <!-- Current Readback -->
+    <widget type="label" version="2.0.0">
+      <name>Current RB Label</name>
+      <text>Current Readback (A):</text>
+      <x>15</x>
+      <y>125</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    
+    <widget type="textupdate" version="2.0.0">
+      <name>Current RB Value</name>
+      <pv_name>$(P):$(R):CURRENT_RB</pv_name>
+      <x>170</x>
+      <y>123</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="12.0">
+        </font>
+      </font>
+    </widget>
+  </widget>
+  
+  <!-- Measurements Panel -->
+  <widget type="group" version="3.0.0">
+    <name>Measurements Group</name>
+    <x>10</x>
+    <y>320</y>
+    <width>860</width>
+    <height>150</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Measurements Title</name>
+      <text>Measurements</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Absolute Current -->
+    <widget type="label" version="2.0.0">
+      <name>Abs Current Label</name>
+      <text>Absolute Current (A):</text>
+      <x>15</x>
+      <y>50</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Abs Current Value</name>
+      <pv_name>$(P):$(R):CURR_RB</pv_name>
+      <x>170</x>
+      <y>48</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Output Current -->
+    <widget type="label" version="2.0.0">
+      <name>Output Current Label</name>
+      <text>Output Current (A):</text>
+      <x>15</x>
+      <y>85</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Output Current Value</name>
+      <pv_name>$(P):$(R):OUTPUT_CURRENT_RB</pv_name>
+      <x>170</x>
+      <y>83</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Output Voltage -->
+    <widget type="label" version="2.0.0">
+      <name>Output Voltage Label</name>
+      <text>Output Voltage (V):</text>
+      <x>400</x>
+      <y>50</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Output Voltage Value</name>
+      <pv_name>$(P):$(R):OUTPUT_VOLTAGE_RB</pv_name>
+      <x>560</x>
+      <y>48</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- Ground Current -->
+    <widget type="label" version="2.0.0">
+      <name>Ground Current Label</name>
+      <text>Ground Current (A):</text>
+      <x>400</x>
+      <y>85</y>
+      <width>150</width>
+      <height>20</height>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Ground Current Value</name>
+      <pv_name>$(P):$(R):GROUND_CURRENT_RB</pv_name>
+      <x>560</x>
+      <y>83</y>
+      <width>100</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="11.0">
+        </font>
+      </font>
+    </widget>
+  </widget>
+  
+  <!-- Mode/State Indicators -->
+  <widget type="group" version="3.0.0">
+    <name>Mode Group</name>
+    <x>10</x>
+    <y>490</y>
+    <width>860</width>
+    <height>130</height>
+    <style>3</style>
+    <transparent>false</transparent>
+    <background_color>
+      <color red="220" green="220" blue="220">
+      </color>
+    </background_color>
+    
+    <widget type="label" version="2.0.0">
+      <name>Mode Title</name>
+      <text>Operation Modes</text>
+      <x>10</x>
+      <y>10</y>
+      <width>200</width>
+      <height>25</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    
+    <!-- DC Mode -->
+    <widget type="led" version="2.0.0">
+      <name>DC Mode LED</name>
+      <pv_name>$(P):$(R):STAT_MODE_DC</pv_name>
+      <x>15</x>
+      <y>50</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>DC Mode Label</name>
+      <text>DC Mode</text>
+      <x>48</x>
+      <y>55</y>
+    </widget>
+    
+    <!-- Pulsed Mode -->
+    <widget type="led" version="2.0.0">
+      <name>Pulsed Mode LED</name>
+      <pv_name>$(P):$(R):STAT_MODE_PULSED</pv_name>
+      <x>150</x>
+      <y>50</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Pulsed Mode Label</name>
+      <text>Pulsed Mode</text>
+      <x>183</x>
+      <y>55</y>
+    </widget>
+    
+    <!-- Ramp Active -->
+    <widget type="led" version="2.0.0">
+      <name>Ramp LED</name>
+      <pv_name>$(P):$(R):STAT_RAMP_ACTIVE</pv_name>
+      <x>300</x>
+      <y>50</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Ramp Label</name>
+      <text>Ramp Active</text>
+      <x>333</x>
+      <y>55</y>
+    </widget>
+    
+    <!-- Positive Polarity -->
+    <widget type="led" version="2.0.0">
+      <name>Pola Pos LED</name>
+      <pv_name>$(P):$(R):STAT_POLA_POSITIVE</pv_name>
+      <x>470</x>
+      <y>50</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Pola Pos Label</name>
+      <text>Polarity +</text>
+      <x>503</x>
+      <y>55</y>
+    </widget>
+    
+    <!-- Negative Polarity -->
+    <widget type="led" version="2.0.0">
+      <name>Pola Neg LED</name>
+      <pv_name>$(P):$(R):STAT_POLA_NEGATIVE</pv_name>
+      <x>610</x>
+      <y>50</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Pola Neg Label</name>
+      <text>Polarity -</text>
+      <x>643</x>
+      <y>55</y>
+    </widget>
+    
+    <!-- Inhibit Status -->
+    <widget type="led" version="2.0.0">
+      <name>Inhibit LED</name>
+      <pv_name>$(P):$(R):STAT_FAULT_INHIBIT</pv_name>
+      <x>15</x>
+      <y>85</y>
+      <width>25</width>
+      <height>25</height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Inhibit Label</name>
+      <text>Inhibited</text>
+      <x>48</x>
+      <y>90</y>
+    </widget>
+  </widget>
+  
+  <!-- Back Button -->
+  <widget type="action_button" version="3.0.0">
+    <name>Back Button</name>
+    <actions>
+      <action type="open_display">
+        <macros>P=$(P),R=$(R)</macros>
+        <name>maccaferriPS.bob</name>
+        <mode>REPLACE</mode>
+      </action>
+    </actions>
+    <text>Back to Main</text>
+    <x>10</x>
+    <y>650</y>
+    <width>120</width>
+    <height>30</height>
+  </widget>
+</display>
