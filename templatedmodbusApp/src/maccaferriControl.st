@@ -13,53 +13,53 @@ option +r;  /* Make reentrant */
 
 /* PV declarations */
 double current_sp;
-assign current_sp to "{P}:{R}:CURRENT_SP";
+assign current_sp to "{P}:CURRENT_SP";
 monitor current_sp;
 
 double current_rb;
-assign current_rb to "{P}:{R}:CURRENT_RB";
+assign current_rb to "{P}:CURRENT_RB";
 monitor current_rb;
 
 double curr_set;
-assign curr_set to "{P}:{R}:CURR_SET";
+assign curr_set to "{P}:CURR_SET";
 
 int stat_pola_positive;
-assign stat_pola_positive to "{P}:{R}:STAT_POLA_POSITIVE";
+assign stat_pola_positive to "{P}:STAT_POLA_POSITIVE";
 monitor stat_pola_positive;
 
 int stat_pola_negative;
-assign stat_pola_negative to "{P}:{R}:STAT_POLA_NEGATIVE";
+assign stat_pola_negative to "{P}:STAT_POLA_NEGATIVE";
 monitor stat_pola_negative;
 
 int stat_standby;
-assign stat_standby to "{P}:{R}:STAT_STANDBY";
+assign stat_standby to "{P}:STAT_STANDBY";
 monitor stat_standby;
 
 int stat_power_on;
-assign stat_power_on to "{P}:{R}:STAT_POWER_ON";
+assign stat_power_on to "{P}:STAT_POWER_ON";
 monitor stat_power_on;
 
 int stat_faulty;
-assign stat_faulty to "{P}:{R}:STAT_FAULTY";
+assign stat_faulty to "{P}:STAT_FAULTY";
 monitor stat_faulty;
 
 int cmd_standby;
-assign cmd_standby to "{P}:{R}:CMD_STANDBY";
+assign cmd_standby to "{P}:CMD_STANDBY";
 
 int cmd_on;
-assign cmd_on to "{P}:{R}:CMD_ON";
+assign cmd_on to "{P}:CMD_ON";
 
 int cmd_start_ramp;
-assign cmd_start_ramp to "{P}:{R}:CMD_START_RAMP";
+assign cmd_start_ramp to "{P}:CMD_START_RAMP";
 
 int cmd_pola_positive;
-assign cmd_pola_positive to "{P}:{R}:CMD_POLA_POSITIVE";
+assign cmd_pola_positive to "{P}:CMD_POLA_POSITIVE";
 
 int cmd_pola_negative;
-assign cmd_pola_negative to "{P}:{R}:CMD_POLA_NEGATIVE";
+assign cmd_pola_negative to "{P}:CMD_POLA_NEGATIVE";
 
 int cmd_reset;
-assign cmd_reset to "{P}:{R}:CMD_RESET";
+assign cmd_reset to "{P}:CMD_RESET";
 monitor cmd_reset;
 
 /* Event flags */
@@ -283,17 +283,9 @@ ss maccaferri_control {
     
     state SET_CURRENT {
         entry {
-            /* Set the absolute current value */
+            /* Set the absolute current value and start ramp */
             curr_set = abs_current;
             pvPut(curr_set);
-        }
-        
-        when (delay(0.5)) {
-        } state START_RAMP
-    }
-    
-    state START_RAMP {
-        entry {
             cmd_start_ramp = 1;
             pvPut(cmd_start_ramp);
         }

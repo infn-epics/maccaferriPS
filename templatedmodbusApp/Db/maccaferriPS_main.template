@@ -10,7 +10,7 @@
 ################### Command Word #1 (Register 0x0000 / 0x00) - Write ####################
 # Individual command bits implemented as coils (bo records)
 
-record(bo, "$(P):$(R):CMD_STANDBY")
+record(bo, "$(P):CMD_STANDBY")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x1 $(TIMEOUT=1000))MODBUS_DATA")
@@ -21,7 +21,7 @@ record(bo, "$(P):$(R):CMD_STANDBY")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_ON")
+record(bo, "$(P):CMD_ON")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x2 $(TIMEOUT=1000))MODBUS_DATA")
@@ -32,7 +32,7 @@ record(bo, "$(P):$(R):CMD_ON")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_OFF")
+record(bo, "$(P):CMD_OFF")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x4 $(TIMEOUT=1000))MODBUS_DATA")
@@ -43,7 +43,7 @@ record(bo, "$(P):$(R):CMD_OFF")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_RESET")
+record(bo, "$(P):CMD_RESET")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x8 $(TIMEOUT=1000))MODBUS_DATA")
@@ -54,7 +54,7 @@ record(bo, "$(P):$(R):CMD_RESET")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_START_RAMP")
+record(bo, "$(P):CMD_START_RAMP")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x10 $(TIMEOUT=1000))MODBUS_DATA")
@@ -65,7 +65,7 @@ record(bo, "$(P):$(R):CMD_START_RAMP")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_MODE_DC")
+record(bo, "$(P):CMD_MODE_DC")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x20 $(TIMEOUT=1000))MODBUS_DATA")
@@ -76,7 +76,7 @@ record(bo, "$(P):$(R):CMD_MODE_DC")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_MODE_PULSED")
+record(bo, "$(P):CMD_MODE_PULSED")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x40 $(TIMEOUT=1000))MODBUS_DATA")
@@ -87,7 +87,7 @@ record(bo, "$(P):$(R):CMD_MODE_PULSED")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_POLA_POSITIVE")
+record(bo, "$(P):CMD_POLA_POSITIVE")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x80 $(TIMEOUT=1000))MODBUS_DATA")
@@ -98,7 +98,7 @@ record(bo, "$(P):$(R):CMD_POLA_POSITIVE")
     field(OSV, "NO_ALARM")
 }
 
-record(bo, "$(P):$(R):CMD_POLA_NEGATIVE")
+record(bo, "$(P):CMD_POLA_NEGATIVE")
 {
     field(DTYP, "asynUInt32Digital")
     field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x100 $(TIMEOUT=1000))MODBUS_DATA")
@@ -111,7 +111,7 @@ record(bo, "$(P):$(R):CMD_POLA_NEGATIVE")
 
 ################### Command Word #2 (Register 0x0001) - Current Setpoint ####################
 
-record(ao, "$(P):$(R):CURR_SET")
+record(ao, "$(P):CURR_SET")
 {
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT_CMD_WO) 1 $(TIMEOUT=1000))MODBUS_DATA")
@@ -126,7 +126,7 @@ record(ao, "$(P):$(R):CURR_SET")
 
 ################### Status/Readback Word #1 (Register 0x0020) - Faults/States ####################
 # Fault bits in register 0x0020
-record(bi, "$(P):$(R):STAT_FAULT_UNDERVOLTAGE")
+record(bi, "$(P):STAT_FAULT_UNDERVOLTAGE")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x1 $(TIMEOUT=1000))MODBUS_DATA")
@@ -138,7 +138,7 @@ record(bi, "$(P):$(R):STAT_FAULT_UNDERVOLTAGE")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_OVERCURRENT")
+record(bi, "$(P):STAT_FAULT_OVERCURRENT")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x2 $(TIMEOUT=1000))MODBUS_DATA")
@@ -150,7 +150,7 @@ record(bi, "$(P):$(R):STAT_FAULT_OVERCURRENT")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_OVERTEMP")
+record(bi, "$(P):STAT_FAULT_OVERTEMP")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x4 $(TIMEOUT=1000))MODBUS_DATA")
@@ -162,7 +162,7 @@ record(bi, "$(P):$(R):STAT_FAULT_OVERTEMP")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_COMM")
+record(bi, "$(P):STAT_FAULT_COMM")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x8 $(TIMEOUT=1000))MODBUS_DATA")
@@ -174,7 +174,7 @@ record(bi, "$(P):$(R):STAT_FAULT_COMM")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_INPUT")
+record(bi, "$(P):STAT_FAULT_INPUT")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x10 $(TIMEOUT=1000))MODBUS_DATA")
@@ -186,7 +186,7 @@ record(bi, "$(P):$(R):STAT_FAULT_INPUT")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_RELAY")
+record(bi, "$(P):STAT_FAULT_RELAY")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x20 $(TIMEOUT=1000))MODBUS_DATA")
@@ -198,7 +198,7 @@ record(bi, "$(P):$(R):STAT_FAULT_RELAY")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_OTHER")
+record(bi, "$(P):STAT_FAULT_OTHER")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 0 0x40 $(TIMEOUT=1000))MODBUS_DATA")
@@ -211,22 +211,22 @@ record(bi, "$(P):$(R):STAT_FAULT_OTHER")
 }
 
 # Aggregate fault indicator
-record(calc, "$(P):$(R):STAT_FAULTY")
+record(calc, "$(P):STAT_FAULTY")
 {
     field(DESC, "Any Fault Detected")
-    field(INPA, "$(P):$(R):STAT_FAULT_UNDERVOLTAGE CP")
-    field(INPB, "$(P):$(R):STAT_FAULT_OVERCURRENT CP")
-    field(INPC, "$(P):$(R):STAT_FAULT_OVERTEMP CP")
-    field(INPD, "$(P):$(R):STAT_FAULT_COMM CP")
-    field(INPE, "$(P):$(R):STAT_FAULT_INPUT CP")
-    field(INPF, "$(P):$(R):STAT_FAULT_RELAY CP")
-    field(INPG, "$(P):$(R):STAT_FAULT_OTHER CP")
+    field(INPA, "$(P):STAT_FAULT_UNDERVOLTAGE CP")
+    field(INPB, "$(P):STAT_FAULT_OVERCURRENT CP")
+    field(INPC, "$(P):STAT_FAULT_OVERTEMP CP")
+    field(INPD, "$(P):STAT_FAULT_COMM CP")
+    field(INPE, "$(P):STAT_FAULT_INPUT CP")
+    field(INPF, "$(P):STAT_FAULT_RELAY CP")
+    field(INPG, "$(P):STAT_FAULT_OTHER CP")
     field(CALC, "A|B|C|D|E|F|G")
 }
 
 ################### Status/Readback Word #2 (Register 0x0021) - More Faults ####################
 # Additional fault bits
-record(bi, "$(P):$(R):STAT_FAULT_BREAKER")
+record(bi, "$(P):STAT_FAULT_BREAKER")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 1 0x1 $(TIMEOUT=1000))MODBUS_DATA")
@@ -238,7 +238,7 @@ record(bi, "$(P):$(R):STAT_FAULT_BREAKER")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_GROUND")
+record(bi, "$(P):STAT_FAULT_GROUND")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 1 0x2 $(TIMEOUT=1000))MODBUS_DATA")
@@ -250,7 +250,7 @@ record(bi, "$(P):$(R):STAT_FAULT_GROUND")
     field(OSV, "MAJOR")
 }
 
-record(bi, "$(P):$(R):STAT_FAULT_INHIBIT")
+record(bi, "$(P):STAT_FAULT_INHIBIT")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 1 0x4 $(TIMEOUT=1000))MODBUS_DATA")
@@ -262,7 +262,7 @@ record(bi, "$(P):$(R):STAT_FAULT_INHIBIT")
     field(OSV, "MINOR")
 }
 
-record(bi, "$(P):$(R):STAT_STANDBY")
+record(bi, "$(P):STAT_STANDBY")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 1 0x8 $(TIMEOUT=1000))MODBUS_DATA")
@@ -274,7 +274,7 @@ record(bi, "$(P):$(R):STAT_STANDBY")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_POWER_ON")
+record(bi, "$(P):STAT_POWER_ON")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 1 0x10 $(TIMEOUT=1000))MODBUS_DATA")
@@ -288,7 +288,7 @@ record(bi, "$(P):$(R):STAT_POWER_ON")
 
 ################### Status/Readback Word #3 (Register 0x0022) - Mode/Polarity Status ####################
 
-record(bi, "$(P):$(R):STAT_MODE_DC")
+record(bi, "$(P):STAT_MODE_DC")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x1 $(TIMEOUT=1000))MODBUS_DATA")
@@ -300,7 +300,7 @@ record(bi, "$(P):$(R):STAT_MODE_DC")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_MODE_PULSED")
+record(bi, "$(P):STAT_MODE_PULSED")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x2 $(TIMEOUT=1000))MODBUS_DATA")
@@ -312,7 +312,7 @@ record(bi, "$(P):$(R):STAT_MODE_PULSED")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_POLA_POSITIVE")
+record(bi, "$(P):STAT_POLA_POSITIVE")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x4 $(TIMEOUT=1000))MODBUS_DATA")
@@ -324,7 +324,7 @@ record(bi, "$(P):$(R):STAT_POLA_POSITIVE")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_POLA_NEGATIVE")
+record(bi, "$(P):STAT_POLA_NEGATIVE")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x8 $(TIMEOUT=1000))MODBUS_DATA")
@@ -336,7 +336,7 @@ record(bi, "$(P):$(R):STAT_POLA_NEGATIVE")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_RAMP_ACTIVE")
+record(bi, "$(P):STAT_RAMP_ACTIVE")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x10 $(TIMEOUT=1000))MODBUS_DATA")
@@ -348,7 +348,7 @@ record(bi, "$(P):$(R):STAT_RAMP_ACTIVE")
     field(OSV, "NO_ALARM")
 }
 
-record(bi, "$(P):$(R):STAT_REMOTE")
+record(bi, "$(P):STAT_REMOTE")
 {
     field(DTYP, "asynUInt32Digital")
     field(INP,  "@asynMask($(PORTSLOW) 2 0x20 $(TIMEOUT=1000))MODBUS_DATA")
@@ -362,7 +362,7 @@ record(bi, "$(P):$(R):STAT_REMOTE")
 
 ################### Fast Readbacks (40ms poll - 25Hz) - Registers 0x0023-0x0026 ####################
 # Current readback (AI, Modbus int16)
-record(ai, "$(P):$(R):CURR_RB")
+record(ai, "$(P):CURR_RB")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORTFAST) 3 $(TIMEOUT=1000))MODBUS_DATA")
@@ -375,7 +375,7 @@ record(ai, "$(P):$(R):CURR_RB")
 }
 
 # Output current readback
-record(ai, "$(P):$(R):OUTPUT_CURRENT_RB")
+record(ai, "$(P):OUTPUT_CURRENT_RB")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORTFAST) 4 $(TIMEOUT=1000))MODBUS_DATA")
@@ -388,7 +388,7 @@ record(ai, "$(P):$(R):OUTPUT_CURRENT_RB")
 }
 
 # Output voltage readback
-record(ai, "$(P):$(R):OUTPUT_VOLTAGE_RB")
+record(ai, "$(P):OUTPUT_VOLTAGE_RB")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORTFAST) 5 $(TIMEOUT=1000))MODBUS_DATA")
@@ -401,7 +401,7 @@ record(ai, "$(P):$(R):OUTPUT_VOLTAGE_RB")
 }
 
 # Ground current readback
-record(ai, "$(P):$(R):GROUND_CURRENT_RB")
+record(ai, "$(P):GROUND_CURRENT_RB")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORTFAST) 6 $(TIMEOUT=1000))MODBUS_DATA")
