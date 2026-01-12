@@ -721,7 +721,7 @@
       <action type="open_display">
         <macros>P=$(P),R=$(R)</macros>
         <name>maccaferriPS_unimag.bob</name>
-        <mode>REPLACE</mode>
+        <mode>0</mode>
       </action>
     </actions>
     <text>UNIMAG Interface</text>
@@ -737,7 +737,7 @@
       <action type="open_display">
         <macros>P=$(P),R=$(R)</macros>
         <name>maccaferriPS_debug.bob</name>
-        <mode>REPLACE</mode>
+        <mode>0</mode>
       </action>
     </actions>
     <text>Debug Panel</text>

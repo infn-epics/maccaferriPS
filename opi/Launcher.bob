@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>Maccaferri Power Supply Launcher</name>
-  <macros>
-  </macros>
   <width>600</width>
   <height>500</height>
   <background_color>
     <color red="240" green="240" blue="240">
     </color>
   </background_color>
-  
-  <!-- Title -->
   <widget type="label" version="2.0.0">
     <name>Title</name>
     <text>Maccaferri Power Supply Control</text>
@@ -23,8 +19,6 @@
       </font>
     </font>
   </widget>
-  
-  <!-- Description -->
   <widget type="label" version="2.0.0">
     <name>Description</name>
     <text>Select power supply to control or open interface</text>
@@ -37,73 +31,72 @@
       </font>
     </font>
   </widget>
-  
-  <!-- Main OPI Button -->
   <widget type="action_button" version="3.0.0">
     <name>Main OPI Button</name>
     <actions>
       <action type="open_display">
-        <macros>P=MACCF,R=PS01</macros>
+        <description>Open Display</description>
+        <file>maccaferriPS.bob</file>
+        <macros>
+          <P>BTF:MAG:MACCAFERRI</P>
+          <R>DHPTB101</R>
+        </macros>
+        <target>window</target>
         <name>maccaferriPS.bob</name>
-        <mode>REPLACE</mode>
       </action>
     </actions>
-    <text>Maccaferri PS01 (Main Control)</text>
+    <text>Maccaferri DHPTB101 (Main Control)</text>
     <x>100</x>
     <y>160</y>
     <width>400</width>
     <height>50</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="16.0">
-      </font>
-    </font>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
-  <!-- UNIMAG OPI Button -->
   <widget type="action_button" version="3.0.0">
     <name>UNIMAG OPI Button</name>
     <actions>
       <action type="open_display">
-        <macros>P=MACCF,R=PS01</macros>
+        <description>Open Display</description>
+        <file>maccaferriPS_unimag.bob</file>
+        <macros>
+          <P>BTF:MAG:MACCAFERRI</P>
+          <R>DHPTB101</R>
+        </macros>
+        <target>window</target>
         <name>maccaferriPS_unimag.bob</name>
-        <mode>REPLACE</mode>
       </action>
     </actions>
-    <text>Maccaferri PS01 (UNIMAG Interface)</text>
+    <text>Maccaferri DHPTB101 (UNIMAG Interface)</text>
     <x>100</x>
     <y>230</y>
     <width>400</width>
     <height>50</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="16.0">
-      </font>
-    </font>
+    <tooltip>$(actions)</tooltip>
   </widget>
-  
-  <!-- Debug OPI Button -->
   <widget type="action_button" version="3.0.0">
     <name>Debug OPI Button</name>
     <actions>
       <action type="open_display">
-        <macros>P=MACCF,R=PS01</macros>
+        <description>Open Display</description>
+        <file>maccaferriPS_debug.bob</file>
+        <macros>
+          <P>BTF:MAG:MACCAFERRI</P>
+          <R>DHPTB101</R>
+        </macros>
+        <target>window</target>
         <name>maccaferriPS_debug.bob</name>
-        <mode>REPLACE</mode>
       </action>
     </actions>
-    <text>Maccaferri PS01 (Debug Panel)</text>
+    <text>Maccaferri DHPTB101 (Debug Panel)</text>
     <x>100</x>
     <y>300</y>
     <width>400</width>
     <height>50</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="16.0">
-      </font>
-    </widget>
-  
-  <!-- Info Text -->
+    <tooltip>$(actions)</tooltip>
+  </widget>
   <widget type="label" version="2.0.0">
     <name>Info</name>
-    <text>Default P=MACCF, R=PS01. Edit the macro parameters in action settings to control different instances.</text>
+    <text>Configured for P=BTF:MAG:MACCAFERRI, R=DHPTB101. Edit the macro parameters in action settings to control different instances.</text>
     <x>50</x>
     <y>420</y>
     <width>500</width>
@@ -111,5 +104,6 @@
     <font>
       <font family="Liberation Sans" style="ITALIC" size="10.0">
       </font>
-    </widget>
+    </font>
+  </widget>
 </display>

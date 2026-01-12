@@ -574,7 +574,7 @@
       <action type="open_display">
         <macros>P=$(P),R=$(R)</macros>
         <name>maccaferriPS.bob</name>
-        <mode>REPLACE</mode>
+        <mode>0</mode>
       </action>
     </actions>
     <text>Back to Main</text>

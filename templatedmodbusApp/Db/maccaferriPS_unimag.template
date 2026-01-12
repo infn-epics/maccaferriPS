@@ -7,7 +7,7 @@
 # User sets current in A (positive or negative)
 # Monitored by SNL program for automatic sequencing and polarity control
 
-record(ao, "$(P):CURRENT_SP")
+record(ao, "$(P):$(R):CURRENT_SP")
 {
     field(DESC, "Current Setpoint (signed, A)")
     field(EGU,  "A")
@@ -20,11 +20,11 @@ record(ao, "$(P):CURRENT_SP")
 
 ################### Current Readback (Signed) ####################
 # Combine absolute current readback with polarity to create signed value
-record(calcout, "$(P):CURRENT_RB")
+record(calcout, "$(P):$(R):CURRENT_RB")
 {
     field(DESC, "Current Readback (signed, A)")
-    field(INPA, "$(P):CURR_RB CP")
-    field(INPB, "$(P):STAT_POLA_POSITIVE CP")
+    field(INPA, "$(P):$(R):CURR_RB CP")
+    field(INPB, "$(P):$(R):STAT_POLA_POSITIVE CP")
     field(CALC, "B?A:(-A)")
     field(EGU,  "A")
     field(PREC, "3")
@@ -32,20 +32,20 @@ record(calcout, "$(P):CURRENT_RB")
 
 ################### Overall State Decoding ####################
 # Priority: FAULT > ON > STANDBY
-record(calcout, "$(P):STATE_DECODE")
+record(calcout, "$(P):$(R):STATE_DECODE")
 {
     field(DESC, "Decode Power Supply State")
-    field(INPA, "$(P):STAT_STANDBY CP")
-    field(INPB, "$(P):STAT_POWER_ON CP")
-    field(INPC, "$(P):STAT_FAULTY CP")
+    field(INPA, "$(P):$(R):STAT_STANDBY CP")
+    field(INPB, "$(P):$(R):STAT_POWER_ON CP")
+    field(INPC, "$(P):$(R):STAT_FAULTY CP")
     field(CALC, "C?3:(B?2:1)")
-    field(OUT,  "$(P):STATE_RB PP")
+    field(OUT,  "$(P):$(R):STATE_RB PP")
 }
 
-record(mbbi, "$(P):STATE_RB")
+record(mbbi, "$(P):$(R):STATE_RB")
 {
     field(DESC, "Power Supply State")
-    field(INP,  "$(P):STATE_DECODE NPP MS")
+    field(INP,  "$(P):$(R):STATE_DECODE NPP MS")
     field(ONST, "STANDBY")
     field(TWST, "ON")
     field(THST, "FAULT")
@@ -59,7 +59,7 @@ record(mbbi, "$(P):STATE_RB")
 
 ################### State Control Setpoint ####################
 # Allows user to command state changes: OFF, STANDBY, ON, RESET
-record(mbbo, "$(P):STATE_SP")
+record(mbbo, "$(P):$(R):STATE_SP")
 {
     field(DESC, "Set Power Supply State")
     field(ZRST, "OFF")
@@ -70,34 +70,34 @@ record(mbbo, "$(P):STATE_SP")
     field(ONVL, "1")
     field(TWVL, "2")
     field(THVL, "3")
-    field(FLNK, "$(P):STATE_PROCESS")
+    field(FLNK, "$(P):$(R):STATE_PROCESS")
 }
 
 ################### State Change Processing ####################
 # Process state change requests by issuing appropriate commands
-record(seq, "$(P):STATE_PROCESS")
+record(seq, "$(P):$(R):STATE_PROCESS")
 {
     field(DESC, "Process State Command")
     field(SELM, "Specified")
-    field(SELL, "$(P):STATE_SP NPP MS")
+    field(SELL, "$(P):$(R):STATE_SP NPP MS")
     # Link 0: OFF command → go to STANDBY
     field(DOL0, "1")
-    field(LNK0, "$(P):CMD_STANDBY PP")
+    field(LNK0, "$(P):$(R):CMD_STANDBY PP")
     # Link 1: STANDBY command
     field(DOL1, "1")
-    field(LNK1, "$(P):CMD_STANDBY PP")
+    field(LNK1, "$(P):$(R):CMD_STANDBY PP")
     # Link 2: ON command
     field(DOL2, "1")
-    field(LNK2, "$(P):CMD_ON PP")
+    field(LNK2, "$(P):$(R):CMD_ON PP")
     # Link 3: RESET command
     field(DOL3, "1")
-    field(LNK3, "$(P):CMD_RESET PP")
+    field(LNK3, "$(P):$(R):CMD_RESET PP")
 }
 
 ################### Interlock Status ####################
-record(calc, "$(P):INTERLOCKED")
+record(calc, "$(P):$(R):INTERLOCKED")
 {
     field(DESC, "Interlock Active (Fault)")
-    field(INPA, "$(P):STAT_FAULTY CP")
+    field(INPA, "$(P):$(R):STAT_FAULTY CP")
     field(CALC, "A")
 }
