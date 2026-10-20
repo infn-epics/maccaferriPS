@@ -304,21 +304,30 @@ ss maccaferri_control {
             /* Need to power on first */
             cmd_on = 1;
             pvPut(cmd_on);
+            timeout_counter = 0;
         } state WAIT_POWERON_DIRECT
-        
+
         when (stat_power_on) {
             /* Already powered on */
             curr_set = abs_current;
             pvPut(curr_set);
         } state RAMP_DIRECT
     }
-    
+
     state WAIT_POWERON_DIRECT {
         when (stat_power_on) {
             curr_set = abs_current;
             pvPut(curr_set);
         } state RAMP_DIRECT
-        
+
+        when (timeout_counter++ >= TIMEOUT_TICKS) {
+            /* Timeout - cancel operation */
+            printf("maccaferriControl: Timeout waiting for power on\n");
+        } state IDLE
+
+        when (efTestAndClear(cmd_reset_ef)) {
+        } state IDLE
+
         when (delay(0.5)) {
             /* Keep checking */
         } state WAIT_POWERON_DIRECT

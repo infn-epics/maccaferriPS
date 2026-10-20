@@ -42,7 +42,7 @@ dbLoadRecords("$(TOP)/db/maccaferriPS_unimag.template", "P=BTF:MAG:MACCAFERRI,R=
 # Initialize IOC
 iocInit()
 
-seq maccaferriControl, "P=BTF:MAG:MACCAFERRI,R=QUATB201"
+seq maccaferriControl, "P=BTF:MAG:MACCAFERRI,R=DHPTB101"
 
 ## Modbus Function Codes Documentation
 # This Maccaferri Power Supply uses only function codes 3 and 16

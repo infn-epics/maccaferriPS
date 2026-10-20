@@ -39,11 +39,18 @@ Where `$(P)` is the IOC prefix (e.g., `MACCA:`)
 |---------|------|-------------|
 | `CURRENT_SP` | ao | Current setpoint (signed, A) |
 | `CURRENT_RB` | calcout | Current readback (signed, A) |
-| `STATE_SP` | mbbo | State control (OFF/STANDBY/ON/RESET) |
-| `STATE_RB` | mbbi | Current state (STANDBY/ON/FAULT) |
-| `STATE_DECODE` | calcout | State decoding calculation |
-| `STATE_PROCESS` | seq | State change processing sequencer |
-| `INTERLOCKED` | calc | Interlock status |
+| `STATE_SP` | mbbo | State control: 0 OFF, 1 ON, 2 STANDBY, 3 RESET |
+| `STATE_RB` | mbbi | State: 0 OFF, 1 ON, 2 STANDBY, 3 FAULT, 4 EXT_INTLK, 5 CONN_FAULT, 6 SP_NOT_REACHED, 7 ST_NOT_REACHED |
+| `STATE_BASE` | ao | Decoded state (0-5) without the watchdogs |
+| `ON_PENDING` | bo | ON requested from OFF, waiting for STANDBY before sending On |
+| `INTERLOCKED` | calc | FAULT or EXT_INTLK |
+| `SET_TOLERANCE` | ao | Readback within this of `CURRENT_SP` counts as reached (A, default 1.0, 0 disables) |
+| `ZERO_TOLERANCE` | ao | A zero setpoint counts as reached within this (A, default 0.5) |
+| `SET_TIMEOUT_S` | ao | Time a setpoint / state may stay unreached before 6 / 7 is shown (s, default 30) |
+
+`STATE_SP` and `STATE_RB` follow the UNIMAG layout shared by the other power-supply IOCs.
+`OFF` sends Off, `STANDBY` Standby, `RESET` Reset. `ON` sends On from STANDBY; from OFF it
+sends Standby first and On once the standby bit is set, since On is only accepted in STANDBY.
 
 ### Main Interface PVs
 
