@@ -34,10 +34,10 @@ drvModbusAsynConfigure("MACCF_SLOW_AI", "MACCF_ASYN", 1, 3, 32, 3, 0, 1000, "MAC
 # Load DB records: pass port substitution names and common parameters
 # Usage: P=prefix, R=DeviceName, PORTFAST, PORTSLOW, PORTCMD_WO, TIMEOUT
 # Main template (commands, states, readbacks)
-dbLoadRecords("$(TOP)/db/maccaferriPS_main.template", "P=BTF:MAG:MACCAFERRI,R=DHPTB101,PORT_CMD_RO=MACCF_CMD_RO,PORT_CMD_WO=MACCF_CMD_WO,PORTFAST=MACCF_FAST_AI,PORTSLOW=MACCF_SLOW_AI,TIMEOUT=2000,MAX_CURR=500,MIN_CURR=0")
+dbLoadRecords("$(TOP)/db/maccaferriPS_main.template", "P=BTF:MAG:MACCAFERRI,R=DHPTB101,PORT_CMD_RO=MACCF_CMD_RO,PORT_CMD_WO=MACCF_CMD_WO,PORTFAST=MACCF_FAST_AI,PORTSLOW=MACCF_SLOW_AI,TIMEOUT=2000,MAX_CURR=200,MIN_CURR=0")
 
 # UNIMAG interface template (signed current control with auto polarity)
-dbLoadRecords("$(TOP)/db/maccaferriPS_unimag.template", "P=BTF:MAG:MACCAFERRI,R=DHPTB101,MAX_CURR=500,MIN_CURR=-500")
+dbLoadRecords("$(TOP)/db/maccaferriPS_unimag.template", "P=BTF:MAG:MACCAFERRI,R=DHPTB101,MAX_CURR=200,MIN_CURR=-200")
 
 # Initialize IOC
 iocInit()
