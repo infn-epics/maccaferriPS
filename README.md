@@ -54,6 +54,13 @@ sends Standby first and On once the standby bit is set, since On is only accepte
 
 ### Main Interface PVs
 
+The PS overwrites the whole command area on every write: a command written
+alone zeroes the current reference. The command word (0x0000) and the current
+reference (0x0001) are therefore always written together as one FC16 frame
+(`CMD_FRAME`, packed by `CMD_WORD` and `CMD_FRAME_CALC`). The `CMD_*` bits are
+pulsed for `CMD_PULSE` seconds (default 0.5) and every change, including
+`CURR_SET`, re-sends the frame.
+
 | PV Name | Type | Description |
 |---------|------|-------------|
 | `CMD_STANDBY` | bo | Standby command |

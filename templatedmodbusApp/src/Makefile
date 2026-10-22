@@ -15,6 +15,10 @@ maccaferriPSSupport_DBD += maccaferriControl.dbd
 maccaferriPSSupport_SRCS += maccaferriControl.st
 maccaferriPSSupport_LIBS += seq pv
 
+# Command area frame packing (aSub)
+maccaferriPSSupport_DBD += maccaferriFrame.dbd
+maccaferriPSSupport_SRCS += maccaferriFrame.c
+
 maccaferriPSSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 # Auto-generate a header file containing a version string.

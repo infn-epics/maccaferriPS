@@ -8,12 +8,14 @@
 # Slow AI readbacks (1000ms poll): 0x0020-0x0022
 
 ################### Command Word #1 (Register 0x0000 / 0x00) - Write ####################
-# Individual command bits (bo records); each bit is pulsed for CMD_PULSE seconds then cleared
+# The PS overwrites the whole command area on every write, so the command word
+# and the current reference are always written together as one FC16 frame
+# (CMD_FRAME). The command bits are soft bo records, each pulsed for CMD_PULSE
+# seconds then cleared; every change rebuilds and writes the frame.
 
 record(bo, "$(P):$(R):CMD_STANDBY")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x1 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Standby Command")
     field(ZNAM, "Off")
@@ -24,8 +26,7 @@ record(bo, "$(P):$(R):CMD_STANDBY")
 
 record(bo, "$(P):$(R):CMD_ON")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x2 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Power On Command")
     field(ZNAM, "Off")
@@ -36,8 +37,7 @@ record(bo, "$(P):$(R):CMD_ON")
 
 record(bo, "$(P):$(R):CMD_OFF")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x4 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Off Command")
     field(ZNAM, "Off")
@@ -48,8 +48,7 @@ record(bo, "$(P):$(R):CMD_OFF")
 
 record(bo, "$(P):$(R):CMD_RESET")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x8 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Reset Command")
     field(ZNAM, "Off")
@@ -60,8 +59,7 @@ record(bo, "$(P):$(R):CMD_RESET")
 
 record(bo, "$(P):$(R):CMD_START_RAMP")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x10 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Start Ramp Command")
     field(ZNAM, "Off")
@@ -72,8 +70,7 @@ record(bo, "$(P):$(R):CMD_START_RAMP")
 
 record(bo, "$(P):$(R):CMD_MODE_DC")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x20 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "DC Mode Command")
     field(ZNAM, "Off")
@@ -84,8 +81,7 @@ record(bo, "$(P):$(R):CMD_MODE_DC")
 
 record(bo, "$(P):$(R):CMD_MODE_PULSED")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x40 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Pulsed Mode Command")
     field(ZNAM, "Off")
@@ -96,8 +92,7 @@ record(bo, "$(P):$(R):CMD_MODE_PULSED")
 
 record(bo, "$(P):$(R):CMD_POLA_POSITIVE")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x80 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Polarity Positive Command")
     field(ZNAM, "Off")
@@ -108,8 +103,7 @@ record(bo, "$(P):$(R):CMD_POLA_POSITIVE")
 
 record(bo, "$(P):$(R):CMD_POLA_NEGATIVE")
 {
-    field(DTYP, "asynUInt32Digital")
-    field(OUT,  "@asynMask($(PORT_CMD_WO) 0 0x100 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FLNK, "$(P):$(R):CMD_WORD")
     field(HIGH, "$(CMD_PULSE=0.5)")
     field(DESC, "Polarity Negative Command")
     field(ZNAM, "Off")
@@ -119,18 +113,63 @@ record(bo, "$(P):$(R):CMD_POLA_NEGATIVE")
 }
 
 ################### Command Word #2 (Register 0x0001) - Current Setpoint ####################
+# Scaling measured on DHPTB101 (2026-10-22) against the real output current,
+# raw 1000..20000: I[A] = CURR_ESLO * raw + CURR_EOFF. The PS display reads
+# ~20% lower than the real current (display = 0.0075638 * raw).
 
 record(ao, "$(P):$(R):CURR_SET")
 {
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT_CMD_WO) 1 $(TIMEOUT=1000))MODBUS_DATA")
     field(DESC, "Current Setpoint")
     field(EGU,  "A")
     field(PREC, "3")
+    field(LINR, "SLOPE")
+    field(ESLO, "$(CURR_ESLO=0.009094)")
+    field(EOFF, "$(CURR_EOFF=-0.475)")
     field(DRVH, "$(MAX_CURR=330)")
     field(DRVL, "$(MIN_CURR=0)")
     field(HOPR, "$(MAX_CURR=330)")
     field(LOPR, "$(MIN_CURR=0)")
+    field(FLNK, "$(P):$(R):CMD_FRAME_CALC")
+}
+
+################### Command Area frame (Registers 0x0000-0x0001) ####################
+
+record(calc, "$(P):$(R):CMD_WORD")
+{
+    field(DESC, "Command word")
+    field(INPA, "$(P):$(R):CMD_STANDBY NPP")
+    field(INPB, "$(P):$(R):CMD_ON NPP")
+    field(INPC, "$(P):$(R):CMD_OFF NPP")
+    field(INPD, "$(P):$(R):CMD_RESET NPP")
+    field(INPE, "$(P):$(R):CMD_START_RAMP NPP")
+    field(INPF, "$(P):$(R):CMD_MODE_DC NPP")
+    field(INPG, "$(P):$(R):CMD_MODE_PULSED NPP")
+    field(INPH, "$(P):$(R):CMD_POLA_POSITIVE NPP")
+    field(INPI, "$(P):$(R):CMD_POLA_NEGATIVE NPP")
+    field(CALC, "A+2*B+4*C+8*D+16*E+32*F+64*G+128*H+256*I")
+    field(FLNK, "$(P):$(R):CMD_FRAME_CALC")
+}
+
+record(aSub, "$(P):$(R):CMD_FRAME_CALC")
+{
+    field(DESC, "Pack command area")
+    field(SNAM, "maccaferriFrame")
+    field(INPA, "$(P):$(R):CMD_WORD NPP")
+    field(FTA,  "LONG")
+    field(INPB, "$(P):$(R):CURR_SET.RVAL NPP")
+    field(FTB,  "LONG")
+    field(FTVA, "LONG")
+    field(NOVA, "2")
+    field(OUTA, "$(P):$(R):CMD_FRAME PP")
+}
+
+record(waveform, "$(P):$(R):CMD_FRAME")
+{
+    field(DESC, "Command area 0x0000-0x0001")
+    field(DTYP, "asynInt32ArrayOut")
+    field(INP,  "@asyn($(PORT_CMD_WO) 0 $(TIMEOUT=1000))MODBUS_DATA")
+    field(FTVL, "LONG")
+    field(NELM, "2")
 }
 
 ################### Status/Readback Word #1 (Register 0x0020) - Faults/States ####################
@@ -380,20 +419,20 @@ record(bi, "$(P):$(R):STAT_RAMP_ACTIVE")
 }
 
 ################### Fast Readbacks (40ms poll - 25Hz) - Registers 0x0023-0x0026 ####################
-# Current readback (AI, Modbus int16)
+# Current reference readback (echo of 0x0001, same scaling as CURR_SET)
 record(ai, "$(P):$(R):CURR_RB")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORTFAST) 0 $(TIMEOUT=1000))MODBUS_DATA")
-    field(DESC, "Current Readback")
+    field(DESC, "Current Reference Readback")
     field(EGU,  "A")
     field(PREC, "3")
     field(SCAN, "I/O Intr")
-    field(ASLO, "0.001")
-    field(AOFF, "0")
+    field(ASLO, "$(CURR_ESLO=0.009094)")
+    field(AOFF, "$(CURR_EOFF=-0.475)")
 }
 
-# Output current readback
+# Output current readback (measured: raw 10154 at 181.4 A real, ~11 at 0 A)
 record(ai, "$(P):$(R):OUTPUT_CURRENT_RB")
 {
     field(DTYP, "asynInt32")
@@ -402,8 +441,8 @@ record(ai, "$(P):$(R):OUTPUT_CURRENT_RB")
     field(EGU,  "A")
     field(PREC, "3")
     field(SCAN, "I/O Intr")
-    field(ASLO, "0.001")
-    field(AOFF, "0")
+    field(ASLO, "$(IOUT_ASLO=0.017884)")
+    field(AOFF, "$(IOUT_AOFF=-0.197)")
 }
 
 # Output voltage readback

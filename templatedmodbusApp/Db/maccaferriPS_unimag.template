@@ -37,11 +37,11 @@ record(ao, "$(P):$(R):CURRENT_SP")
 }
 
 ################### Current Readback (Signed) ####################
-# Combine absolute current readback with polarity to create signed value
+# Combine measured output current with polarity to create signed value
 record(calcout, "$(P):$(R):CURRENT_RB")
 {
     field(DESC, "Current Readback (signed, A)")
-    field(INPA, "$(P):$(R):CURR_RB CP")
+    field(INPA, "$(P):$(R):OUTPUT_CURRENT_RB CP")
     field(INPB, "$(P):$(R):STAT_POLA_POSITIVE CP")
     field(CALC, "B?A:(-A)")
     field(EGU,  "A")
