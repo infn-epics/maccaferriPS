@@ -82,8 +82,25 @@ int timeout_counter;
 #define POL_POSITIVE 1
 #define POL_NEGATIVE 2
 
+/* Sequence step published to STATE_SM */
+int sm_step;
+assign sm_step to "{P}:{R}:STATE_SM_STEP";
+
+/* STATE_SM values published in STATE_SM_STEP */
+#define SM_READY     0
+#define SM_GOTOSET   1
+#define SM_GOTOSTATE 2
+#define SM_GOZERO    3
+#define SM_GOPOS     4
+#define SM_GONEG     5
+
 ss maccaferri_control {
     state IDLE {
+        entry {
+            sm_step = SM_READY;
+            pvPut(sm_step);
+        }
+
         when (efTestAndClear(current_sp_ef)) {
             /* New current setpoint received */
             requested_current = current_sp;
@@ -148,6 +165,8 @@ ss maccaferri_control {
     
     state RAMP_TO_ZERO {
         entry {
+            sm_step = SM_GOZERO;
+            pvPut(sm_step);
             /* Set current to zero and start ramp */
             curr_set = 0.0;
             pvPut(curr_set);
@@ -177,6 +196,8 @@ ss maccaferri_control {
     
     state GO_STANDBY {
         entry {
+            sm_step = SM_GOTOSTATE;
+            pvPut(sm_step);
             cmd_standby = 1;
             pvPut(cmd_standby);
             timeout_counter = 0;
@@ -208,6 +229,8 @@ ss maccaferri_control {
     
     state CHANGE_POLARITY {
         entry {
+            sm_step = (requested_polarity == POL_POSITIVE) ? SM_GOPOS : SM_GONEG;
+            pvPut(sm_step);
             /* Issue polarity change command */
             if (requested_polarity == POL_POSITIVE) {
                 cmd_pola_positive = 1;
@@ -254,6 +277,8 @@ ss maccaferri_control {
     
     state GO_POWERON {
         entry {
+            sm_step = SM_GOTOSTATE;
+            pvPut(sm_step);
             cmd_on = 1;
             pvPut(cmd_on);
             timeout_counter = 0;
@@ -283,6 +308,8 @@ ss maccaferri_control {
     
     state SET_CURRENT {
         entry {
+            sm_step = SM_GOTOSET;
+            pvPut(sm_step);
             /* Set the absolute current value and start ramp */
             curr_set = abs_current;
             pvPut(curr_set);
@@ -296,6 +323,8 @@ ss maccaferri_control {
     
     state SET_CURRENT_DIRECT {
         entry {
+            sm_step = SM_GOTOSET;
+            pvPut(sm_step);
             /* No polarity change needed, check if we need to power on */
             pvGet(stat_power_on);
         }
@@ -315,6 +344,11 @@ ss maccaferri_control {
     }
 
     state WAIT_POWERON_DIRECT {
+        entry {
+            sm_step = SM_GOTOSTATE;
+            pvPut(sm_step);
+        }
+
         when (stat_power_on) {
             curr_set = abs_current;
             pvPut(curr_set);
@@ -334,6 +368,11 @@ ss maccaferri_control {
     }
     
     state RAMP_DIRECT {
+        entry {
+            sm_step = SM_GOTOSET;
+            pvPut(sm_step);
+        }
+
         when (delay(0.5)) {
             cmd_start_ramp = 1;
             pvPut(cmd_start_ramp);
